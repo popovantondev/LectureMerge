@@ -8,3 +8,6 @@
 *.yml text eol=lf
 *.png binary
 *.icns binary
+
+# Preserve upstream license texts verbatim, including their whitespace.
+/vendor/* -whitespace

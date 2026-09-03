@@ -1,0 +1,19 @@
+name: Source checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  swift-and-project:
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Check project metadata and Swift types
+        run: bash Scripts/check.sh
+# Hardware encoding and real-media acceptance remain local checks on Apple Silicon.
+# This workflow never publishes releases or uploads user media.

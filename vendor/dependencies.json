@@ -1,0 +1,14 @@
+{
+  "ffmpeg-9.0.1.tar.xz": {
+    "url": "https://ffmpeg.org/releases/ffmpeg-9.0.1.tar.xz",
+    "sha256": "cf38e0e28c7e5605942c4a77755349b0145804a397af37eb1fb4c77cb237f635"
+  },
+  "lame-4.0.tar.gz": {
+    "url": "https://downloads.sourceforge.net/project/lame/lame/4.0/lame-4.0.tar.gz",
+    "sha256": "3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb"
+  },
+  "pkgconf-2.5.1.tar.xz": {
+    "url": "https://distfiles.ariadne.space/pkgconf/pkgconf-2.5.1.tar.xz",
+    "sha256": "cd05c9589b9f86ecf044c10a2269822bc9eb001eced2582cfffd658b0a50c243"
+  }
+}

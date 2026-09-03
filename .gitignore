@@ -1,0 +1,33 @@
+# Build products, local releases and downloaded codec archives
+/build/
+/dist/
+/releases/
+/vendor/ffmpeg
+/vendor/ffprobe
+/vendor/*.tar.*
+/vendor/SHA256SUMS.local
+*.app/
+*.zip
+*.dmg
+
+# User inputs, generated outputs and workstation state
+/Тестовые результаты/
+*.mp4
+*.mkv
+*.wav
+*.m4a
+*.aac
+*.mp3
+*.flac
+*.srt
+*.olyalecture
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+._*
+__pycache__/
+*.py[cod]
+.idea/
+.vscode/

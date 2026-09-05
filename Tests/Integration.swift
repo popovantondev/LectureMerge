@@ -116,7 +116,24 @@ import Darwin
         try ff(["-f", "lavfi", "-i", "sine=duration=15", "-c:a", "pcm_s16le", longRU.path])
         mismatch.russianAudio = longRU
         mismatch = Matcher.analyze(mismatch, tools: tools)
-        try require(mismatch.status == .review, "значительное расхождение длительности блокирует запуск")
+        try require(mismatch.status == .review && mismatch.detail.contains("длиннее видео"), "длинная RU-дорожка предупреждает о возможной обрезке слов")
+
+        let shortRU = fixtures.appendingPathComponent("short-matching.ru.siri.voice.m4a")
+        try ff(["-f", "lavfi", "-i", "sine=frequency=880:sample_rate=48000:duration=1", "-c:a", "aac", "-b:a", "128k", shortRU.path])
+        var alignedShort = job
+        alignedShort.russianAudio = shortRU
+        alignedShort = Matcher.analyze(alignedShort, tools: tools)
+        try require(alignedShort.status == .ready && alignedShort.detail.contains("Озвучка совпадает с SRT") && alignedShort.detail.contains("без перекодирования"), "короткая M4A, совпадающая с концом RU SRT, разрешена")
+        let alignedOutput = try Exporter.run(alignedShort, tools: tools, destination: outputs, test: false, policy: .copy, token: Cancellation()) { _, _, _ in }!
+        let alignedInfo = try MediaInfo.read(alignedOutput, tools: tools)
+        try require(alignedInfo.duration >= 5.96 && (alignedInfo.audio[0].seconds ?? 0) < 1.2, "короткий AAC не растянут, полный видеоряд сохранён")
+
+        let mismatchedSRT = fixtures.appendingPathComponent("short-mismatch.ru.srt")
+        try "1\n00:00:00,300 --> 00:00:03,000\nРеплика заканчивается позже звука.\n\n".write(to: mismatchedSRT, atomically: true, encoding: .utf8)
+        var mismatchedShort = alignedShort
+        mismatchedShort.russianSRT = mismatchedSRT
+        mismatchedShort = Matcher.analyze(mismatchedShort, tools: tools)
+        try require(mismatchedShort.status == .review && mismatchedShort.detail.contains("не совпадает с концом RU SRT"), "короткая RU-дорожка, не совпадающая с SRT, остаётся на проверке")
         let mkv = fixtures.appendingPathComponent("German PCM.mkv")
         try ff(["-i", video.path, "-map", "0:v:0", "-map", "0:a:0", "-c:v", "copy", "-c:a", "pcm_s16le", mkv.path])
         var mkvJob = job; mkvJob.video = mkv; mkvJob.germanIndex = nil

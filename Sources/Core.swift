@@ -221,6 +221,7 @@ struct Lecture: Identifiable {
     var germanIndex: Int?
     var info: MediaInfo?
     var russianInfo: MediaInfo?
+    var russianSRTEnd: Double?
     var settings = ExportSettings()
     var status: JobStatus = .analyzing
     var detail = ""
@@ -300,6 +301,8 @@ enum Matcher {
             guard ruSRT.resolvingSymlinksInPath() != deSRT.resolvingSymlinksInPath() else { throw AssemblyError.message("Для RU и DE выбран один и тот же SRT. Проверьте подбор.") }
             job.russianInfo = try MediaInfo.read(ru, tools: tools, token: token)
             guard let russian = job.russianInfo, russian.audio.count == 1 else { throw AssemblyError.message("Русская озвучка должна содержать ровно одну аудиодорожку.") }
+            let russianSRTEnd = try Subtitles.lastEnd(ruSRT)
+            job.russianSRTEnd = russianSRTEnd
             guard info.duration.isFinite, info.duration > 0, video.fps > 0, video.displaySize.0 > 0, video.displaySize.1 > 0 else { throw AssemblyError.message("Не удалось определить длительность, частоту или размеры видео.") }
             // Unsupported offsets are visible and blocked, never silently reset per input.
             if [info.start, video.start, german.start, russian.start, russian.audio[0].start].contains(where: { abs($0) > 0.12 }) {
@@ -307,8 +310,12 @@ enum Matcher {
             }
             let difference = russian.duration - info.duration
             let tolerance = max(2, min(10, info.duration * 0.005))
-            guard russian.duration > 0, abs(difference) <= tolerance else {
-                throw AssemblyError.message("Длительности расходятся: видео \(clockText(info.duration)), RU \(clockText(russian.duration)); разница \(String(format: "%.2f", difference)) с. Проверьте озвучку. Темп автоматически не меняется.")
+            guard russian.duration > 0 else { throw AssemblyError.message("Не удалось определить длительность русской озвучки.") }
+            if difference > tolerance {
+                throw AssemblyError.message("Русская озвучка длиннее видео на \(String(format: "%.2f", difference)) с. Возможна обрезка последних слов; проверьте файлы. Темп автоматически не меняется.")
+            }
+            if difference < -tolerance && abs(russian.duration - russianSRTEnd) > 0.5 {
+                throw AssemblyError.message("RU короче видео на \(String(format: "%.2f", -difference)) с и не совпадает с концом RU SRT: RU \(clockText(russian.duration)), SRT \(clockText(russianSRTEnd)). Проверьте озвучку. Темп автоматически не меняется.")
             }
             if let duration = german.seconds, abs(duration - info.duration) > tolerance {
                 throw AssemblyError.message("Длительность немецкой дорожки заметно отличается от видео. Проверьте выбранную дорожку.")
@@ -340,8 +347,13 @@ struct ExportPlan {
     let test: Bool
     var description: String { "\(width)×\(height) · \(copyVideo ? "копирование видео" : "H.264 · Apple VideoToolbox") · RU \(copyRussianAudio ? "AAC без перекодирования" : "AAC 128 кбит/с")" }
     var russianAudioDescription: String {
-        let shortfall = duration - (job.russianInfo?.duration ?? 0)
+        let russianDuration = job.russianInfo?.duration ?? 0
+        let shortfall = duration - russianDuration
+        let matchesSRT = job.russianSRTEnd.map { abs($0 - russianDuration) <= 0.5 } == true
         if copyRussianAudio {
+            if shortfall > 0.05 && matchesSRT {
+                return "Озвучка совпадает с SRT. После последней реплики остаётся \(String(format: "%.2f", shortfall)) с видео без русской речи. RU AAC-LC копируется без перекодирования."
+            }
             let tail = shortfall > 0.05 ? " После окончания RU остаётся \(String(format: "%.2f", shortfall)) с видео без русской речи; конец видео сохраняется." : ""
             return "RU AAC-LC копируется без перекодирования и потери качества; сохраняются исходные частота и каналы." + tail
         }
@@ -420,6 +432,19 @@ enum ConflictPolicy: String, CaseIterable, Identifiable, Codable {
 }
 
 enum Subtitles {
+    static func lastEnd(_ input: URL) throws -> Double {
+        let original = try String(contentsOf: input, encoding: .utf8)
+        let normalized = original.replacingOccurrences(of: "\u{feff}", with: "").replacingOccurrences(of: "\r\n", with: "\n").replacingOccurrences(of: "\r", with: "\n")
+        let regex = try NSRegularExpression(pattern: #"(?m)^\d+:\d{2}:\d{2}[,.]\d{3}[ \t]+-->[ \t]+(\d+):(\d{2}):(\d{2})[,.](\d{3})[^\n]*$"#)
+        let matches = regex.matches(in: normalized, range: NSRange(normalized.startIndex..., in: normalized))
+        guard !matches.isEmpty else { throw AssemblyError.message("Нет корректных временных меток SRT: \(input.lastPathComponent)") }
+        let ns = normalized as NSString
+        return matches.reduce(0) { latest, match in
+            let values = (1...4).map { Double(ns.substring(with: match.range(at: $0))) ?? 0 }
+            return max(latest, values[0] * 3600 + values[1] * 60 + values[2] + values[3] / 1000)
+        }
+    }
+
     /// Clip cue ends as well as starts: FFmpeg's -t alone does not clip a crossing subtitle packet.
     static func clipped(_ input: URL, duration: Double) throws -> String {
         let original = try String(contentsOf: input, encoding: .utf8)

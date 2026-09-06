@@ -75,6 +75,7 @@ bash Scripts/build.sh --preview   # Новая отдельная пробная
 - [Использование](docs/USAGE.md) и [переход на основную папку](docs/MIGRATION.md)
 - [Сборка и тесты](docs/BUILD.md)
 - [Архитектура](docs/ARCHITECTURE.md)
+- [Запланированные доработки](docs/ROADMAP.md)
 - [Правила версий и откат](docs/VERSIONING.md)
 - [Проверка выпуска 2.0.2](docs/VERIFICATION-2.0.2.md) и [проверки прежних выпусков](docs/VERIFICATION.md)
 - [GitHub и CI](docs/GITHUB.md)

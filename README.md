@@ -77,7 +77,7 @@ bash Scripts/build.sh --preview   # Новая отдельная пробная
 - [Архитектура](docs/ARCHITECTURE.md)
 - [Запланированные доработки](docs/ROADMAP.md)
 - [Правила версий и откат](docs/VERSIONING.md)
-- [Проверки выпуска](docs/VERIFICATION.md)
+- [Проверка выпуска 2.1.0](docs/VERIFICATION-2.1.0.md) и [проверки прежних выпусков](docs/VERIFICATION.md)
 - [GitHub и CI](docs/GITHUB.md)
 - [Сторонние компоненты](THIRD_PARTY.md) и [вклад в разработку](CONTRIBUTING.md)
 

@@ -133,6 +133,13 @@ import UniformTypeIdentifiers
         jobs.removeAll(); selected = nil; queueProgress = 0; eta = ""
         queueText = "Очередь очищена. Исходники и результаты на диске сохранены."
     }
+    func newProject() {
+        guard !locked, confirmDiscard() else { return }
+        jobs.removeAll(); selected = nil; common = ExportSettings(); destination = nil
+        recursive = false; parallelism = .auto; policy = .copy
+        projectURL = nil; savedData = nil; queueProgress = 0; eta = ""
+        queueText = "Новый проект. Добавьте видео, аудио или папку с лекциями."
+    }
     func show(_ url: URL) { NSWorkspace.shared.activateFileViewerSelecting([url]) }
     func project() -> LectureProject {
         LectureProject(lectures: jobs.map(SavedLecture.init), common: common, destination: destination, recursive: recursive, parallelism: parallelism)
@@ -147,6 +154,7 @@ import UniformTypeIdentifiers
         if target == nil || asNew {
             let p = NSSavePanel(); p.allowedContentTypes = [UTType(filenameExtension: "olyalecture") ?? .json]
             p.nameFieldStringValue = projectURL?.lastPathComponent ?? "Лекции.olyalecture"
+            p.canCreateDirectories = true
             p.message = "Сохраняются список, выбранные файлы, настройки и готовые результаты. Медиафайлы не копируются."
             guard p.runModal() == .OK, let url = p.url else { return false }; target = url
         }

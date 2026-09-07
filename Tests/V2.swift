@@ -111,6 +111,8 @@ import Foundation
         let originalBytes = try project.encoded(), restoredBytes = try read.encoded()
         try check(originalBytes == restoredBytes, "проект сохраняет Unicode-пути, настройки, очередь и завершённые задания")
         try check(read.lectures[0].restore().settings.resolution == .p2160 && read.parallelism == .four, "разрешение и параллельность восстановлены")
+        do { try project.save(video); throw AssemblyError.message("Project overwrote source media") }
+        catch { try check(error.localizedDescription.contains("Нельзя сохранить"), "проект не может перезаписать исходный медиафайл") }
         var duplicate = project; duplicate.lectures = [project.lectures[0], project.lectures[0]]
         let duplicatePath = qa.appendingPathComponent("duplicate.olyalecture"); try duplicate.encoded().write(to: duplicatePath)
         do { _ = try LectureProject.read(duplicatePath); throw AssemblyError.message("Duplicate IDs were accepted") }

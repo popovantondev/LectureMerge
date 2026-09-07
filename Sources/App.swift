@@ -26,9 +26,10 @@ struct MainView: View {
                 VStack(alignment: .trailing, spacing: 8) {
                     Text("\(applicationVersion) · Apple Silicon").font(.caption).foregroundStyle(.secondary)
                     HStack {
+                        Button("Новый") { model.newProject() }
                         Button("Открыть проект…") { model.openProject() }
                         Button("Сохранить") { model.saveProject() }
-                        Menu { Button("Сохранить как…") { model.saveProject(asNew: true) } } label: { Image(systemName: "ellipsis") }.frame(width: 35)
+                        Button("Сохранить как…") { model.saveProject(asNew: true) }
                     }.disabled(model.locked)
                 }
             }.padding(22)
@@ -280,6 +281,8 @@ struct SettingsView: View {
         appMenu.addItem(withTitle: "Завершить «Сборка лекций»", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         appItem.submenu = appMenu; menu.addItem(appItem)
         let fileItem = NSMenuItem(), fileMenu = NSMenu(title: "Проект")
+        fileMenu.addItem(withTitle: "Новый проект", action: #selector(newProject), keyEquivalent: "n")
+        fileMenu.addItem(.separator())
         fileMenu.addItem(withTitle: "Открыть проект…", action: #selector(openProject), keyEquivalent: "o")
         fileMenu.addItem(withTitle: "Сохранить проект", action: #selector(saveProject), keyEquivalent: "s")
         let saveAs = fileMenu.addItem(withTitle: "Сохранить проект как…", action: #selector(saveProjectAs), keyEquivalent: "s")
@@ -328,6 +331,7 @@ struct SettingsView: View {
     @objc func logs() {
         if let logs = model.tools?.logs { try? FileManager.default.createDirectory(at: logs, withIntermediateDirectories: true); NSWorkspace.shared.open(logs) }
     }
+    @objc func newProject() { model.newProject() }
     @objc func openProject() { model.openProject() }
     @objc func saveProject() { model.saveProject() }
     @objc func saveProjectAs() { model.saveProject(asNew: true) }

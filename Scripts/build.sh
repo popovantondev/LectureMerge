@@ -24,6 +24,10 @@ cleanup() {
 trap cleanup EXIT
 APP="$TASK_STAGE/Сборка лекций 2.app"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources/bin" "$APP/Contents/Resources/Licenses"
+for language in ru de en; do
+    mkdir -p "$APP/Contents/Resources/$language.lproj"
+    cp "Resources/$language.lproj/"*.strings "$APP/Contents/Resources/$language.lproj/"
+done
 for tool in ffmpeg ffprobe; do
     if [ ! -x "vendor/$tool" ]; then
         echo "Не найден vendor/$tool. Сначала выполните Scripts/build-ffmpeg.sh"
@@ -51,8 +55,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <plist version="1.0"><dict>
 <key>CFBundleExecutable</key><string>LectureAssembler2</string>
 <key>CFBundleIdentifier</key><string>local.olya.lecture-assembler.v2</string>
-<key>CFBundleName</key><string>Сборка лекций 2</string>
-<key>CFBundleDisplayName</key><string>Сборка лекций 2</string>
+<key>CFBundleName</key><string>LectureMerge</string>
+<key>CFBundleDisplayName</key><string>LectureMerge</string>
 <key>CFBundleIconFile</key><string>AppIcon</string>
 <key>CFBundlePackageType</key><string>APPL</string>
 <key>CFBundleShortVersionString</key><string>2.0</string>
@@ -60,8 +64,8 @@ cat > "$APP/Contents/Info.plist" <<'PLIST'
 <key>LSMinimumSystemVersion</key><string>14.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSPrincipalClass</key><string>NSApplication</string>
-<key>CFBundleDevelopmentRegion</key><string>ru</string>
-<key>CFBundleLocalizations</key><array><string>ru</string></array>
+<key>CFBundleDevelopmentRegion</key><string>en</string>
+<key>CFBundleLocalizations</key><array><string>ru</string><string>de</string><string>en</string></array>
 <key>UTExportedTypeDeclarations</key><array><dict>
 <key>UTTypeIdentifier</key><string>local.olya.lecture-project</string>
 <key>UTTypeDescription</key><string>Проект сборки лекций</string>

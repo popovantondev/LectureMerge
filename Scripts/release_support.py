@@ -28,7 +28,7 @@ def sha256(path):
 
 def source_fingerprint():
     paths = [ROOT / 'VERSION', ROOT / 'BUILD_NUMBER', ROOT / 'vendor/dependencies.json']
-    for name in ['Sources', 'Scripts', 'Assets']:
+    for name in ['Sources', 'Scripts', 'Assets', 'Resources']:
         paths.extend(p for p in (ROOT / name).rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.name != '.DS_Store')
     return {str(p.relative_to(ROOT)): sha256(p) for p in sorted(paths)}
 

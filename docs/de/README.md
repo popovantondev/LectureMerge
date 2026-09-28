@@ -1,37 +1,43 @@
-# Benutzerhandbuch
+# LectureMerge – Benutzerhandbuch
 
-[Für macOS herunterladen](https://github.com/popovantondev/LectureMerge/releases/tag/v2.1.0) · [Deutsch](README.md) · [Русский](../ru/README.md) · [English](../en/README.md)
+[Für macOS laden](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English](../en/README.md) · [Deutsch](README.md) · [Русский](../ru/README.md)
 
-LectureMerge ist eine lokale macOS-App, die Lecture-Video, russische Vertonung, Originalton und Untertitel zu einer MP4-Datei zusammenfügt. Audio kann auch separat als AAC oder MP3 exportiert werden. Aktuelle Version: **2.1.0** · macOS 14 oder neuer · Apple Silicon.
+LectureMerge fügt Vorlesungsvideo, russische Vertonung, Originalton und Untertitel in einer MP4-Datei zusammen. Außerdem kann eine Audiospur separat als AAC oder MP3 exportiert werden. Die Verarbeitung erfolgt lokal auf dem Mac; ein Online-Dienst wird nicht verwendet. **Version 2.2.0 · macOS 14 oder neuer · Apple Silicon.**
 
-## Erster Export
+![LectureMerge mit deutscher Oberfläche](screenshots/main.png)
 
-1. Füge einen Vorlesungsordner oder einzelne Video- und Audiodateien hinzu.
-2. Wähle einen Eintrag in der Warteschlange und prüfe die zugeordneten Sprach- und Untertiteldateien.
-3. Wähle in der russischen Oberfläche **«Видео MP4»** oder **«Только звук»** und lege die Ausgabeoptionen fest.
-4. Wähle den Ausgabeordner. Standardmäßig werden fertige Dateien in **Готовое** neben dem jeweiligen Quellvideo gespeichert.
-5. Führe zuerst einen **30-Sekunden-Test** aus und prüfe das Ergebnis.
+## Oberflächensprache wählen
 
-Einträge lassen sich mit Backspace, Delete, der Papierkorb-Schaltfläche oder dem Kontextmenü entfernen. **Очистить очередь** leert nur die Liste; Quelldateien und fertige Exporte bleiben erhalten.
+Wählen Sie oben rechts **Deutsch**, **English** oder **Русский**. Die Auswahl wird für den nächsten Start gespeichert. Beim ersten Start übernimmt LectureMerge die macOS-Sprache, sofern sie unterstützt wird; andernfalls startet die App auf Russisch.
 
-## Video und Audio
+## Eine MP4-Datei erstellen
 
-Die Videoauflösungen reichen von 144p bis 4K. **Без перекодирования** kopiert kompatibles H.264-Video ohne Qualitätsänderung. **Исходное разрешение** behält die Bildgröße bei; mit der entsprechenden Option kann das Video trotzdem neu codiert werden. Für Größenänderungen nutzt LectureMerge Apples Hardware-Encoder H.264 VideoToolbox.
+1. Fügen Sie einen Vorlesungsordner oder einzelne Video- und Audiodateien hinzu.
+2. Wählen Sie einen Eintrag in der Warteschlange und prüfen Sie die zugeordneten Vertonungs- und Untertiteldateien.
+3. Wählen Sie **MP4-Video** und legen Sie Auflösung, Qualität, Audio und Ausgabe fest.
+4. Wählen Sie einen Ausgabeordner oder behalten Sie den Standardordner neben jedem Quellvideo bei.
+5. Erstellen Sie zuerst einen **30-Sekunden-Test** und prüfen Sie das Ergebnis.
 
-Kompatible RU-AAC-LC-Vertonung in M4A/MP4 kann ohne erneute Codierung in die MP4-Datei übernommen werden. WAV und inkompatible Audiodateien werden als AAC-LC codiert. Eine kurze Vertonung ist zulässig, wenn sie mit dem letzten RU-Untertitel endet; danach läuft das Video ohne russische Sprache weiter. Die Sprache wird nicht gestreckt.
+Kompatible RU-AAC-LC-Vertonung in M4A/MP4 wird ohne Neukodierung übernommen. WAV und inkompatible Audiodateien werden als AAC-LC codiert. Endet die Vertonung mit dem letzten russischen Untertitel, bleibt das restliche Video erhalten und läuft ohne russische Sprache weiter. Die Sprache wird nicht gestreckt.
 
-Der reine Audioexport unterstützt AAC-Kopie, AAC mit 96–256 kbit/s und MP3 mit 128–320 kbit/s. MP3 ist standardmäßig auf 320 kbit/s eingestellt. M4A bewahrt Zeitinformationen für die spätere MP4-Zusammenstellung.
+Die Videoauflösungen reichen von 144p bis 4K. **Ohne Neukodierung übernehmen** erhält kompatibles H.264 unverändert. **Originalauflösung** behält die Bildgröße bei und kann bei aktivierter Option trotzdem neu codieren. Für Größenänderungen nutzt LectureMerge Apples Hardware-Encoder H.264 VideoToolbox.
 
-## Projekte und Dateischutz
+## Nur Audio exportieren
 
-Über **Проект → Новый проект / Открыть проект… / Сохранить / Сохранить как…** werden Warteschlange und Einstellungen gespeichert. Projektdateien enthalten Verweise auf Quellpfade, aber keine Medien.
+Wählen Sie **Nur Audio** und danach die russische Vertonung oder eine Audiospur des Quellvideos. Im AAC-Kopiermodus bleiben vorhandene AAC-Daten unverändert. Weitere AAC-Profile reichen von 96 bis 256 kbit/s; MP3 von 128 bis 320 kbit/s, voreingestellt sind 320 kbit/s. M4A bewahrt Zeitinformationen für die spätere MP4-Zusammenstellung.
 
-LectureMerge arbeitet lokal und benötigt weder Internet noch eine Online-API. Originaldateien bleiben erhalten. Exporte werden zunächst temporär geschrieben und vor dem Verschieben in den Zielordner geprüft. Die App ist ad-hoc signiert und nicht von Apple notarisiert.
+## Warteschlange und Projekte
 
-## Weitere Informationen
+Entfernen Sie einen Eintrag mit Entf oder Rückschritt, der Papierkorb-Schaltfläche oder dem Kontextmenü. **Warteschlange leeren** entfernt nur die Einträge; Quelldateien und fertige Exporte bleiben erhalten. Die Projektbefehle finden Sie im Menü **Projekt** und oben im Fenster. Ein Projekt speichert Pfade und Einstellungen, aber keine Mediendateien.
 
-- [Ausführliches russisches Handbuch](../USAGE.md)
-- [Build und Tests](../BUILD.md)
-- [Prüfung von Version 2.1.0](../VERIFICATION-2.1.0.md)
-- [Rechte und zulässige Nutzung](../../RIGHTS.md)
-- [Hinweise zu Drittanbieter-Komponenten](../../THIRD_PARTY_NOTICES.md)
+## Schutz und Einschränkungen
+
+LectureMerge lässt Quelldateien unverändert, schreibt die Ausgabe zunächst temporär und prüft sie, bevor sie im Zielordner abgelegt wird. Übersetzung und Sprachsynthese sind nicht enthalten. Die Untertitelsteuerung hängt vom Media-Player ab. Die App ist ad-hoc signiert und nicht von Apple notarisiert.
+
+## Weitere Dokumentation
+
+- [Anleitung zum Erstellen und Testen](BUILD.md)
+- [Architekturübersicht](ARCHITECTURE.md)
+- [Rechte und zulässige Nutzung](RIGHTS.md)
+- [Hinweise zu Drittanbieter-Komponenten](THIRD_PARTY_NOTICES.md)
+- [Prüfbericht zur Version](../VERIFICATION-2.2.0.md)

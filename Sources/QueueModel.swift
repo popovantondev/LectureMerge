@@ -4,6 +4,12 @@ import UniformTypeIdentifiers
 
 @MainActor final class QueueModel: ObservableObject {
     @Published var jobs: [Lecture] = []
+    @Published var language: AppLanguage {
+        didSet {
+            UserDefaults.standard.set(language.rawValue, forKey: "appLanguage")
+            if !busy { queueText = localized("Добавьте видео, аудио или папку с лекциями", language: language); eta = "" }
+        }
+    }
     @Published var selected: UUID?
     @Published var common = ExportSettings()
     @Published var destination: URL?
@@ -13,7 +19,7 @@ import UniformTypeIdentifiers
     @Published var busy = false
     @Published var importing = false
     @Published var message: String?
-    @Published var queueText = "Добавьте видео, аудио или папку с лекциями"
+    @Published var queueText = localized("Добавьте видео, аудио или папку с лекциями")
     @Published var queueProgress = 0.0
     @Published var eta = ""
     @Published var tools: Toolchain?
@@ -27,7 +33,11 @@ import UniformTypeIdentifiers
     private var fractions: [UUID: Double] = [:]
     var locked: Bool { busy || importing }
     var current: Lecture? { jobs.first { $0.id == selected } }
-    init() { do { tools = try Toolchain.bundled() } catch { message = error.localizedDescription } }
+    init() {
+        language = AppLanguage.preferred
+        queueText = localized("Добавьте видео, аудио или папку с лекциями", language: language)
+        do { tools = try Toolchain.bundled() } catch { message = error.localizedDescription }
+    }
     func mutate(_ id: UUID, _ update: (inout Lecture) -> Void) {
         if let index = jobs.firstIndex(where: { $0.id == id }) { update(&jobs[index]) }
     }
@@ -44,14 +54,14 @@ import UniformTypeIdentifiers
     }
     func chooseVideos(folder: Bool) {
         let panel = NSOpenPanel(); panel.canChooseDirectories = folder; panel.canChooseFiles = !folder
-        panel.allowsMultipleSelection = true; panel.prompt = "Добавить"
-        panel.message = folder ? "Папки с лекциями; звуковые файлы можно добавить отдельно" : "Видео MP4/MKV или аудио WAV/M4A/AAC/MP3/FLAC"
+        panel.allowsMultipleSelection = true; panel.prompt = localized("Добавить", language: language)
+        panel.message = folder ? localized("Папки с лекциями; звуковые файлы можно добавить отдельно", language: language) : localized("Видео MP4/MKV или аудио WAV/M4A/AAC/MP3/FLAC", language: language)
         if !folder { panel.allowedContentTypes = ["mp4", "mkv", "wav", "m4a", "aac", "mp3", "flac"].compactMap { UTType(filenameExtension: $0) } }
         if panel.runModal() == .OK { add(panel.urls) }
     }
     func add(_ urls: [URL]) {
         guard !locked, let tools else { return }
-        importing = true; queueText = "Подбор файлов и анализ…"
+        importing = true; queueText = localized("Подбор файлов и анализ…", language: language)
         let recursive = recursive, settings = common
         let existing = Set(jobs.map { $0.video.resolvingSymlinksInPath().path })
         Task {
@@ -72,7 +82,7 @@ import UniformTypeIdentifiers
                 return result
             }.value
             jobs += added; if selected == nil { selected = added.first?.id }
-            importing = false; queueText = added.isEmpty ? "Новых файлов не найдено" : "Добавлено: \(added.count). Проверьте параметры справа."
+            importing = false; queueText = added.isEmpty ? localized("Новых файлов не найдено", language: language) : localizedFormat("Добавлено: %d. Проверьте параметры справа.", language: language, added.count)
         }
     }
     func reanalyze(_ id: UUID) {
@@ -87,7 +97,7 @@ import UniformTypeIdentifiers
     func pickComponent(_ id: UUID, kind: String) {
         guard !locked else { return }
         let p = NSOpenPanel(); p.canChooseDirectories = false; p.allowsMultipleSelection = false
-        p.prompt = "Выбрать"; p.directoryURL = current?.video.deletingLastPathComponent()
+        p.prompt = localized("Выбрать", language: language); p.directoryURL = current?.video.deletingLastPathComponent()
         let extensions = kind == "primary" ? ["mp4", "mkv", "wav", "m4a", "aac", "mp3", "flac"] : kind == "audio" ? ["wav", "m4a", "aac", "mp3", "flac"] : ["srt"]
         p.allowedContentTypes = extensions.compactMap { UTType(filenameExtension: $0) }
         if p.runModal() == .OK, let url = p.url {
@@ -104,7 +114,7 @@ import UniformTypeIdentifiers
         }
     }
     func chooseDestination() {
-        let p = NSOpenPanel(); p.canChooseFiles = false; p.canChooseDirectories = true; p.canCreateDirectories = true; p.prompt = "Сохранять сюда"
+        let p = NSOpenPanel(); p.canChooseFiles = false; p.canChooseDirectories = true; p.canCreateDirectories = true; p.prompt = localized("Сохранять сюда", language: language)
         if p.runModal() == .OK { destination = p.url }
     }
     func applyCommon() {
@@ -125,20 +135,20 @@ import UniformTypeIdentifiers
         let index = jobs.firstIndex { $0.id == id } ?? 0
         jobs.removeAll { $0.id == id }
         if selected == id { selected = jobs.isEmpty ? nil : jobs[min(index, jobs.count - 1)].id }
-        queueText = jobs.isEmpty ? "Очередь пуста. Файлы на диске сохранены." : "Задание удалено из очереди. Файлы на диске сохранены."
+        queueText = jobs.isEmpty ? localized("Очередь пуста. Файлы на диске сохранены.", language: language) : localized("Задание удалено из очереди. Файлы на диске сохранены.", language: language)
     }
     func removeSelection() { if let selected { remove(selected) } }
     func clearQueue() {
         guard !locked else { return }
         jobs.removeAll(); selected = nil; queueProgress = 0; eta = ""
-        queueText = "Очередь очищена. Исходники и результаты на диске сохранены."
+        queueText = localized("Очередь очищена. Исходники и результаты на диске сохранены.", language: language)
     }
     func newProject() {
         guard !locked, confirmDiscard() else { return }
         jobs.removeAll(); selected = nil; common = ExportSettings(); destination = nil
         recursive = false; parallelism = .auto; policy = .copy
         projectURL = nil; savedData = nil; queueProgress = 0; eta = ""
-        queueText = "Новый проект. Добавьте видео, аудио или папку с лекциями."
+        queueText = localized("Новый проект. Добавьте видео, аудио или папку с лекциями.", language: language)
     }
     func show(_ url: URL) { NSWorkspace.shared.activateFileViewerSelecting([url]) }
     func project() -> LectureProject {
@@ -153,21 +163,21 @@ import UniformTypeIdentifiers
         var target = projectURL
         if target == nil || asNew {
             let p = NSSavePanel(); p.allowedContentTypes = [UTType(filenameExtension: "olyalecture") ?? .json]
-            p.nameFieldStringValue = projectURL?.lastPathComponent ?? "Лекции.olyalecture"
+            p.nameFieldStringValue = projectURL?.lastPathComponent ?? localized("Лекции.olyalecture", language: language)
             p.canCreateDirectories = true
-            p.message = "Сохраняются список, выбранные файлы, настройки и готовые результаты. Медиафайлы не копируются."
+            p.message = localized("Сохраняются список, выбранные файлы, настройки и готовые результаты. Медиафайлы не копируются.", language: language)
             guard p.runModal() == .OK, let url = p.url else { return false }; target = url
         }
         do {
             let snapshot = project(); try snapshot.save(target!)
-            savedData = try snapshot.encoded(); projectURL = target; queueText = "Проект сохранён: \(target!.lastPathComponent)"; return true
+            savedData = try snapshot.encoded(); projectURL = target; queueText = localizedFormat("Проект сохранён: %@", language: language, target!.lastPathComponent); return true
         } catch { message = error.localizedDescription; return false }
     }
     func confirmDiscard() -> Bool {
         guard hasUnsavedChanges else { return true }
-        let alert = NSAlert(); alert.messageText = "Сохранить изменения проекта?"
-        alert.informativeText = "Список и настройки изменились. Медиафайлы остаются на диске."
-        alert.addButton(withTitle: "Сохранить"); alert.addButton(withTitle: "Не сохранять"); alert.addButton(withTitle: "Отмена")
+        let alert = NSAlert(); alert.messageText = localized("Сохранить изменения проекта?", language: language)
+        alert.informativeText = localized("Список и настройки изменились. Медиафайлы остаются на диске.", language: language)
+        alert.addButton(withTitle: localized("Сохранить", language: language)); alert.addButton(withTitle: localized("Не сохранять", language: language)); alert.addButton(withTitle: localized("Отмена", language: language))
         let response = alert.runModal()
         if response == .alertFirstButtonReturn { return saveProject() }
         return response == .alertSecondButtonReturn
@@ -183,7 +193,8 @@ import UniformTypeIdentifiers
         guard let target else { return }
         do {
             let saved = try LectureProject.read(target)
-            importing = true; queueText = "Открываю проект и проверяю файлы…"
+            importing = true; queueText = localized("Открываю проект и проверяю файлы…", language: language)
+            let currentLanguage = language
             Task {
                 let restored = await Task.detached { () -> [Lecture] in
                     saved.lectures.map { row in
@@ -192,7 +203,7 @@ import UniformTypeIdentifiers
                             do {
                                 if job.settings.mode == .audio { try AudioExporter.validate(output, plan: AudioPlan(job, test: false), tools: tools, token: Cancellation()) }
                                 else { _ = try Exporter.validate(output, plan: ExportPlan(job, test: false), tools: tools, token: Cancellation()) }
-                                job.status = .completed; job.progress = 1; job.detail = "Готовый результат из проекта проверен."
+                    job.status = .completed; job.progress = 1; job.detail = localized("Готовый результат из проекта проверен.", language: currentLanguage)
                             } catch { job.detail = "Результат проекта требует повторного экспорта: " + error.localizedDescription }
                         }
                         return job
@@ -201,16 +212,16 @@ import UniformTypeIdentifiers
                 jobs = restored; selected = restored.first?.id; common = saved.common; destination = saved.destination
                 recursive = saved.recursive; parallelism = saved.parallelism; policy = .copy; projectURL = target
                 importing = false; savedData = try? project().encoded(); queueProgress = 0; eta = ""
-                queueText = "Проект открыт: \(target.lastPathComponent)"
+                queueText = localizedFormat("Проект открыт: %@", language: language, target.lastPathComponent)
             }
-        } catch { message = "Не удалось открыть проект: " + error.localizedDescription }
+            } catch { message = localizedFormat("Не удалось открыть проект: %@", language: language, error.localizedDescription) }
     }
     func start(test: Bool) {
         guard !locked, let tools else { return }
         var pending: [Lecture] = []
         if test { if let job = current { pending.append(job) } }
         else { for job in jobs where job.enabled && job.status != .completed { pending.append(job) } }
-        guard !pending.isEmpty else { message = "Нет заданий для запуска."; return }
+        guard !pending.isEmpty else { message = localized("Нет заданий для запуска.", language: language); return }
         do {
             for job in pending {
                 guard [.ready, .completed, .failed, .stopped, .skipped].contains(job.status) else { throw AssemblyError.message("\(job.basename): \(job.detail)") }
@@ -225,9 +236,9 @@ import UniformTypeIdentifiers
                     guard names.insert(path).inserted else { throw AssemblyError.message("Несколько заданий имеют одинаковое имя результата. Выберите «Сохранить копию», чтобы сохранить каждое.") }
                     if FileManager.default.fileExists(atPath: path) { collisions.append(path) }
                 }
-                let alert = NSAlert(); alert.messageText = "Разрешить замену результатов?"
-                alert.informativeText = collisions.isEmpty ? "Совпавшие имена будут заменяться после успешной проверки новых файлов." : collisions.joined(separator: "\n")
-                alert.addButton(withTitle: "Заменить"); alert.addButton(withTitle: "Отмена")
+                let alert = NSAlert(); alert.messageText = localized("Разрешить замену результатов?", language: language)
+                alert.informativeText = collisions.isEmpty ? localized("Совпавшие имена будут заменяться после успешной проверки новых файлов.", language: language) : collisions.joined(separator: "\n")
+                alert.addButton(withTitle: localized("Заменить", language: language)); alert.addButton(withTitle: localized("Отмена", language: language))
                 guard alert.runModal() == .alertFirstButtonReturn else { return }
             }
         } catch { message = error.localizedDescription; return }
@@ -239,7 +250,7 @@ import UniformTypeIdentifiers
         }
         busy = true; stopRequested = false; runID = thisRun; runStarted = Date(); fractions = [:]; weights = [:]; queueProgress = 0
         for job in batch { weights[job.id] = (try? PlannedOutput(job, test: test).duration) ?? 1; fractions[job.id] = 0 }
-        queueText = "Запуск: \(batch.count) заданий · одновременно \(limit)"; eta = "Оцениваю время…"
+        queueText = localizedFormat("Запуск: %d заданий · одновременно %d", language: language, batch.count, limit); eta = localized("Оцениваю время…", language: language)
         Task {
             var completed = 0, failed = 0, next = 0
             await withTaskGroup(of: JobOutcome.self) { group in
@@ -256,7 +267,7 @@ import UniformTypeIdentifiers
                 }
             }
             busy = false; tokens = [:]; eta = ""
-            queueText = stopRequested ? "Очередь остановлена · Готово: \(completed)" : "Готово: \(completed) · Ошибок: \(failed) · Время \(clockText(Date().timeIntervalSince(runStarted)))"
+            queueText = stopRequested ? localizedFormat("Очередь остановлена · Готово: %d", language: language, completed) : localizedFormat("Готово: %d · Ошибок: %d · Время %@", language: language, completed, failed, clockText(Date().timeIntervalSince(runStarted)))
         }
     }
     private struct JobOutcome { var success = false; var failed = false }
@@ -264,7 +275,7 @@ import UniformTypeIdentifiers
                          protected: Set<String>, run: UUID, workers: Int) async -> JobOutcome {
         guard !stopRequested else { return JobOutcome() }
         let token = Cancellation(); tokens[job.id] = token
-        mutate(job.id) { $0.status = .running; $0.progress = 0; $0.detail = "Проверка файлов перед запуском…" }
+        mutate(job.id) { $0.status = .running; $0.progress = 0; $0.detail = localized("Проверка файлов перед запуском…", language: language) }
         defer { tokens.removeValue(forKey: job.id); fractions[job.id] = 1; refreshProgress() }
         do {
             let result = try await Task.detached(priority: .userInitiated) {
@@ -282,10 +293,10 @@ import UniformTypeIdentifiers
                 }
             }.value
             if let result {
-                mutate(job.id) { $0.output = result; $0.progress = test ? 0 : 1; $0.status = test ? .ready : .completed; $0.detail = test ? "Тест готов и проверен." : "Результат проверен: структура, длительность, начало, середина и конец." }
+                mutate(job.id) { $0.output = result; $0.progress = test ? 0 : 1; $0.status = test ? .ready : .completed; $0.detail = localized(test ? "Тест готов и проверен." : "Результат проверен: структура, длительность, начало, середина и конец.", language: language) }
                 return JobOutcome(success: true)
             }
-            mutate(job.id) { $0.status = .skipped; $0.detail = "Результат уже существует; выбран пропуск." }
+            mutate(job.id) { $0.status = .skipped; $0.detail = localized("Результат уже существует; выбран пропуск.", language: language) }
             return JobOutcome()
         } catch {
             mutate(job.id) { $0.status = token.isCancelled ? .stopped : .failed; $0.detail = error.localizedDescription }
@@ -297,8 +308,8 @@ import UniformTypeIdentifiers
         let done = weights.reduce(0.0) { $0 + $1.value * (fractions[$1.key] ?? 0) }
         queueProgress = min(1, done / total)
         let elapsed = Date().timeIntervalSince(runStarted)
-        if elapsed > 2 && queueProgress > 0.01 { eta = "Осталось примерно \(clockText(elapsed * (1 - queueProgress) / queueProgress)) + проверка" }
-        if !stopRequested { queueText = "Активно: \(tokens.count) · Очередь: \(Int(queueProgress * 100))%" }
+        if elapsed > 2 && queueProgress > 0.01 { eta = localizedFormat("Осталось примерно %@ + проверка", language: language, clockText(elapsed * (1 - queueProgress) / queueProgress)) }
+        if !stopRequested { queueText = localizedFormat("Активно: %d · Очередь: %d%%", language: language, tokens.count, Int(queueProgress * 100)) }
     }
-    func stop() { stopRequested = true; for token in tokens.values { token.cancel() }; queueText = "Останавливаю все активные задания…" }
+    func stop() { stopRequested = true; for token in tokens.values { token.cancel() }; queueText = localized("Останавливаю все активные задания…", language: language) }
 }

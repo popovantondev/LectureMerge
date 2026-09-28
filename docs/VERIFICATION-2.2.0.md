@@ -18,8 +18,14 @@ Date: 2026-09-28 · Apple Silicon · macOS preview build
 - `git diff --check` — passed. Local Markdown links are checked again after the
   report and release documents are finalized.
 
+## GitHub Actions
+
+After publication, the read-only `Source checks` workflow ran on `main` and
+completed successfully in 38 seconds. [Run 1](https://github.com/popovantondev/LectureMerge/actions/runs/36452840931).
+
 ## Scope and limits
 
-The 2.2.0 verification is local. It does not claim GitHub Actions, notarization,
-testing on other Macs, Windows, Android devices, or real user lecture files.
-The older 2.1.0 release and tag were not modified.
+The local 2.2.0 checks do not claim notarization, testing on other Macs,
+Windows, Android devices, or real user lecture files. The GitHub workflow checks
+project metadata and Swift types; it does not run hardware media encoding. The
+older 2.1.0 release and tag were not modified.

@@ -22,7 +22,7 @@ LectureMerge combines lecture video, Russian narration, original audio, and subt
 
 ## Download
 
-The repository and version 2.2.0 release are being prepared for publication. Release packages include the app, source archive, manifest, checksums, and third-party notices.
+Version 2.2.0 is available from the [GitHub Releases page](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0). Release packages include the app, source archive, manifest, checksums, and third-party notices.
 
 The app supports Apple Silicon Macs running macOS 14 or later. It is ad-hoc signed and is not notarized by Apple. Start with the guide for your interface language: [English](docs/en/README.md) · [Deutsch](docs/de/README.md) · [Русский](docs/ru/README.md).
 
@@ -53,4 +53,4 @@ The original source code is published for public viewing only; no open-source li
 
 ## Feedback
 
-Bug reports and suggestions are welcome in English, German, or Russian through GitHub Issues after publication. Include the app and macOS versions; remove personal paths, lecture files, and subtitle text from reports.
+Bug reports and suggestions are welcome in English, German, or Russian through [GitHub Issues](https://github.com/popovantondev/LectureMerge/issues). Include the app and macOS versions; remove personal paths, lecture files, and subtitle text from reports.

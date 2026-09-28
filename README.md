@@ -1,86 +1,66 @@
 # LectureMerge
 
-**Объединение готового видео, русской озвучки и субтитров в одну лекцию.**
-Локальное приложение для macOS 14+ и Apple Silicon, с русским интерфейсом.
+[Download for macOS](https://github.com/popovantondev/LectureMerge/releases/tag/v2.1.0) · [Deutsch](docs/de/README.md) · [Русский](docs/ru/README.md) · [English](docs/en/README.md)
 
-Текущий выпуск: **2.1.0**. Эта папка — основной проект для дальнейшей разработки.
+<img src="Assets/AppIcon-1024.png" width="128" alt="LectureMerge app icon">
 
-<img src="Assets/AppIcon-1024.png" width="128" alt="Значок LectureMerge">
+**macOS 14 or later · Apple Silicon · Version 2.1.0**
 
-## Запуск
+LectureMerge combines a video, Russian narration, the original audio, and subtitles into one MP4 lecture. It also exports AAC or MP3 audio on its own. Processing is local; the app does not need an internet connection or an online API.
 
-Откройте [Сборка лекций 2.app](<dist/v2.1.0/Сборка лекций 2.app>)
-либо **Открыть LectureMerge.command**. Название приложения в macOS пока
-«Сборка лекций 2»; английское название проекта — LectureMerge.
-FFmpeg, FFprobe и LAME уже внутри `.app`, соседние исходники для запуска не нужны.
+## What it does
 
-Архив готовой версии, исходники и контрольные суммы:
-[releases/v2.1.0](releases/v2.1.0). Следующие выпуски получают свои папки.
-На GitHub эти локальные ZIP-файлы добавляются как вложения Releases;
-в истории Git хранятся только исходники и документация.
+- Create MP4 files with H.264 video, AAC audio, and switchable Russian and German subtitles.
+- Copy compatible AAC-LC narration into the MP4 without re-encoding.
+- Keep the original German audio as a separate track.
+- Resize video from 144p to 4K, preserve the original dimensions, or copy compatible H.264 without re-encoding.
+- Export AAC or MP3 audio, including AAC copy mode and MP3 up to 320 kbit/s.
+- Process a queue of up to four files, save projects, and run a 30-second test before the full export.
 
-## Возможности
+## Download
 
-- Новый увеличенный значок: две бирюзовые карточки, прозрачный фон.
-- MP4: H.264, русский звук первым и основным, немецкий оригинал отдельно,
-  русские и немецкие переключаемые субтитры.
-- Готовый RU AAC-LC из `.ru.siri.voice.m4a` копируется без перекодирования.
-  Совместим с форматом **SRT Озвучки 1.1**; WAV также поддерживается.
-- Короткая озвучка, совпадающая с концом RU SRT, разрешена: видео сохраняется
-  полностью, а после последней реплики остаётся участок без русской речи.
-- Разрешения от 144p до 4K, исходный размер или копирование видео без потерь.
-- Только звук: AAC без перекодирования, AAC 96–256 или MP3 128–320 кбит/с.
-- Очередь до четырёх параллельных заданий, аппаратный H.264 VideoToolbox.
-- Открытие исходника, Delete/Backspace, контекстное меню, очистка списка.
-- Новый, открытие, сохранение и «Сохранить как…» для проектов `.olyalecture`.
-- Проверка результата перед публикацией; исходные файлы сохраняются.
+The current local release is **2.1.0**. The GitHub repository and release page are being prepared; the download link above will work after the repository and release are published. Release archives include the app, source archive, manifest, checksums, and third-party notices.
 
-Интернет и API для работы программы не нужны. [Как пользоваться](docs/USAGE.md).
+The app is built for Apple Silicon Macs running macOS 14 or later. Builds are ad-hoc signed and are not notarized by Apple. See the [Russian user guide](docs/USAGE.md) for current installation and first-run details.
 
-## Структура проекта
+## Quick start
 
-```text
-lecture_merge/
-├── Sources/          Swift: интерфейс, очередь, видео, звук, проекты
-├── Tests/            Интеграционные проверки и измерения
-├── Scripts/          Сборка, тесты, создание и проверка релизов
-├── Assets/           Значок приложения
-├── vendor/           Лицензии и список зависимостей с SHA-256
-├── docs/             Пользование, сборка, архитектура, версии, проверки
-├── .github/          CI, шаблоны ошибок и pull request
-├── dist/v2.1.0/      Готовое приложение; исключено из Git
-├── releases/v2.1.0/  Архивы выпуска; исключены из Git
-├── VERSION          Версия приложения
-├── BUILD_NUMBER     Номер сборки macOS
-├── CHANGELOG.md     История изменений
-└── AGENTS.md         Правила дальнейшей работы с проектом
-```
+1. Add a folder of lectures or select video and audio files.
+2. Choose a lecture and check the matched narration and subtitle files.
+3. In the Russian interface, choose **«Видео MP4»** or **«Только звук»** and set the output options.
+4. Run **30-second test**, review the result, then start the queue.
 
-## Разработка и выпуск
+The app keeps original files. It writes to a temporary output and checks the result before publishing it to the destination folder.
+
+## Documentation
+
+- [English guide](docs/en/README.md)
+- [German guide](docs/de/README.md)
+- [Russian guide](docs/ru/README.md) and [detailed Russian manual](docs/USAGE.md)
+- [Build and tests](docs/BUILD.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Changelog](CHANGELOG.md)
+- [Release verification](docs/VERIFICATION-2.1.0.md)
+- [GitHub preparation and release process](docs/GITHUB.md)
+- [Third-party notices](THIRD_PARTY_NOTICES.md)
+- [Rights and permitted use](RIGHTS.md)
+
+## Build from source
+
+On a Mac with Apple Command Line Tools installed:
 
 ```bash
-bash Scripts/check.sh             # Структура проекта и проверка Swift
-bash Scripts/test.sh              # Видео, AAC, MP3, проекты, параллельность
-bash Scripts/build.sh --preview   # Новая отдельная пробная сборка
+bash Scripts/check.sh
+bash Scripts/test.sh
+bash Scripts/build.sh --preview
 ```
 
-Для следующего выпуска создаётся ветка, обновляются `VERSION`, `BUILD_NUMBER`
-и `CHANGELOG.md`. После проверок `build.sh` собирает новый `dist/vX.Y.Z`,
-а `release.py` создаёт новый Git-тег и `releases/vX.Y.Z`.
-Существующий номер выпуска скрипты перезаписывать отказываются.
-Полный порядок: [VERSIONING.md](docs/VERSIONING.md).
+See [Build and tests](docs/BUILD.md) and [versioning](docs/VERSIONING.md) before making a release. The CI workflow checks project metadata and Swift types on macOS; hardware encoding checks remain local.
 
-## Документация
+## Feedback
 
-- [Использование](docs/USAGE.md) и [переход на основную папку](docs/MIGRATION.md)
-- [Сборка и тесты](docs/BUILD.md)
-- [Архитектура](docs/ARCHITECTURE.md)
-- [Запланированные доработки](docs/ROADMAP.md)
-- [Правила версий и откат](docs/VERSIONING.md)
-- [Проверка выпуска 2.1.0](docs/VERIFICATION-2.1.0.md) и [проверки прежних выпусков](docs/VERIFICATION.md)
-- [GitHub и CI](docs/GITHUB.md)
-- [Сторонние компоненты](THIRD_PARTY.md) и [вклад в разработку](CONTRIBUTING.md)
+Bug reports and feature suggestions are welcome in English, German, or Russian through the repository's GitHub Issues after publication. Please include the app version and macOS version, and remove personal paths, lecture files, and subtitle text from reports.
 
-Репозиторий пока локальный; GitHub remote не подключён. Лицензия на собственный
-код проекта владельцем пока не выбрана. Лицензии внешних компонентов сохранены
-отдельно и включены в приложение.
+## Rights and third-party software
+
+The project owner's source code is published for public viewing only; no open-source license is granted. Individuals may download and run an unmodified release binary for personal use. See [RIGHTS.md](RIGHTS.md) and [third-party notices](THIRD_PARTY_NOTICES.md). Licenses for bundled components continue to apply to those components.

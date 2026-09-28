@@ -3,6 +3,7 @@ set -euo pipefail
 TASK_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$TASK_ROOT"
 python3 Scripts/check-project.py
+python3 Scripts/check-localization.py
 mkdir -p build/module-cache
 xcrun swiftc -swift-version 5 -typecheck -target arm64-apple-macosx14.0 \
     -module-cache-path build/module-cache \

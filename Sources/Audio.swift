@@ -4,19 +4,23 @@ import Darwin
 enum ExportMode: String, Codable, CaseIterable, Identifiable {
     case video = "Видео MP4", audio = "Только звук"
     var id: String { rawValue }
+    var title: String { localized(rawValue) }
 }
 enum AACEngine: String, Codable, CaseIterable, Identifiable {
     case apple = "Apple AudioToolbox · быстро", ffmpeg = "FFmpeg AAC · как в версии 1"
     var id: String { rawValue }
+    var title: String { localized(rawValue) }
     var codec: String { self == .apple ? "aac_at" : "aac" }
 }
 enum AudioSource: String, Codable, CaseIterable, Identifiable {
     case russian = "Русская озвучка", original = "Дорожка исходника"
     var id: String { rawValue }
+    var title: String { localized(rawValue) }
 }
 enum AACContainer: String, Codable, CaseIterable, Identifiable {
     case m4a = "M4A", adts = "AAC (.aac)"
     var id: String { rawValue }
+    var title: String { localized(rawValue) }
     var ext: String { self == .m4a ? "m4a" : "aac" }
 }
 enum AudioProfile: String, Codable, CaseIterable, Identifiable {
@@ -25,13 +29,16 @@ enum AudioProfile: String, Codable, CaseIterable, Identifiable {
     var isMP3: Bool { rawValue.hasPrefix("mp3") }
     var isCopy: Bool { self == .aacCopy }
     var kbps: Int { Int(rawValue.dropFirst(3)) ?? 0 }
-    var title: String { isCopy ? "AAC · без перекодирования" : "\(isMP3 ? "MP3" : "AAC") · \(kbps) кбит/с" }
+    var title: String {
+        if isCopy { return localized("AAC · без перекодирования") }
+        return localizedFormat(isMP3 ? "MP3 · %d кбит/с" : "AAC · %d кбит/с", kbps)
+    }
 }
 enum Parallelism: String, Codable, CaseIterable, Identifiable {
     case auto, one, two, three, four
     var id: String { rawValue }
     var limit: Int { switch self { case .auto: return max(1, min(4, ProcessInfo.processInfo.activeProcessorCount / 2)); case .one: return 1; case .two: return 2; case .three: return 3; case .four: return 4 } }
-    var title: String { self == .auto ? "Авто · до \(limit) одновременно" : "\(limit) одновременно" }
+    var title: String { self == .auto ? localizedFormat("Авто · до %d одновременно", limit) : localizedFormat("%d одновременно", limit) }
 }
 
 /// Reserve estimated space for every active job on the same volume, not per process.

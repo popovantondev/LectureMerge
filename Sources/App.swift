@@ -20,11 +20,17 @@ struct MainView: View {
                 VStack(alignment: .leading, spacing: 3) {
                     Text("Сборка лекций").font(.system(size: 25, weight: .semibold))
                     Text("Видео MP4 · Звук AAC / MP3 · Пакетная обработка").foregroundStyle(.secondary)
-                    Text((model.projectURL?.lastPathComponent ?? "Новый проект") + (model.hasUnsavedChanges ? " · есть изменения" : "")).font(.caption).foregroundStyle(.secondary)
+                    Text((model.projectURL?.lastPathComponent ?? localized("Новый проект", language: model.language)) + (model.hasUnsavedChanges ? localized(" · есть изменения", language: model.language) : "")).font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
                 VStack(alignment: .trailing, spacing: 8) {
                     Text("\(applicationVersion) · Apple Silicon").font(.caption).foregroundStyle(.secondary)
+                    HStack(spacing: 6) {
+                    Text("Язык")
+                    Picker("Язык", selection: $model.language) {
+                        ForEach(AppLanguage.allCases) { language in Text(language.nativeName).tag(language) }
+                    }.labelsHidden().frame(width: 135).help("Язык интерфейса")
+                    }.disabled(model.locked)
                     HStack {
                         Button("Новый") { model.newProject() }
                         Button("Открыть проект…") { model.openProject() }
@@ -65,6 +71,10 @@ struct MainView: View {
         .frame(minWidth: 1040, minHeight: 760)
         .background(Color(nsColor: .windowBackgroundColor))
         .tint(accent)
+        .environment(\.locale, model.language.locale)
+        .onChange(of: model.language) { _, _ in
+            (NSApp.delegate as? AppDelegate)?.updateLanguageChrome()
+        }
         .overlay { if dropping { RoundedRectangle(cornerRadius: 10).stroke(accent, lineWidth: 4).padding(6).allowsHitTesting(false) } }
         .onDrop(of: [UTType.fileURL.identifier], isTargeted: $dropping) { providers in
             guard !model.locked else { return false }
@@ -82,7 +92,7 @@ struct MainView: View {
         }
         .alert("Сборка лекций", isPresented: Binding(get: { model.message != nil }, set: { if !$0 { model.message = nil } })) {
             Button("Понятно") { model.message = nil }
-        } message: { Text(model.message ?? "") }
+        } message: { Text(localizedUserText(model.message ?? "", language: model.language)) }
     }
     var queue: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -109,7 +119,7 @@ struct MainView: View {
                                     if job.settings.mode == .video { Text((try? ExportPlan(job, test: false)).map { "\($0.height)p" } ?? "—").font(.caption) }
                                 }
                                 HStack {
-                                    Text(job.status.rawValue).font(.caption).foregroundStyle(statusColor(job.status))
+                                    Text(localizedStatus(job.status, language: model.language)).font(.caption).foregroundStyle(statusColor(job.status))
                                     Spacer()
                                     if [.running, .validating].contains(job.status) { Text("\(Int(job.progress * 100))%").font(.caption.monospacedDigit()) }
                                 }
@@ -156,7 +166,7 @@ struct MainView: View {
                     fact("ВИДЕО", "\(video.codec_name?.uppercased() ?? "?") · \(String(format: "%.2f", video.fps)) fps")
                 }.padding(12).frame(maxWidth: .infinity, alignment: .leading).background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 9))
             } else if let info = job.info, let audio = info.audio.first {
-                HStack(spacing: 20) { fact("АУДИО", audio.codec_name?.uppercased() ?? "?"); fact("ДЛИТЕЛЬНОСТЬ", clockText(info.duration)); fact("ПАРАМЕТРЫ", "\(audio.sample_rate ?? "?") Гц · \(audio.channels ?? 0) кан.") }
+                HStack(spacing: 20) { fact("АУДИО", audio.codec_name?.uppercased() ?? "?"); fact("ДЛИТЕЛЬНОСТЬ", clockText(info.duration)); fact("ПАРАМЕТРЫ", "\(audio.sample_rate ?? "?") Hz · \(audio.channels ?? 0) \(localized("кан.", language: model.language))") }
             }
             VStack(alignment: .leading, spacing: 10) {
                 if !job.primaryIsAudio && (job.settings.mode == .video || job.settings.audioSource == .russian) {
@@ -175,7 +185,7 @@ struct MainView: View {
                     fileRow("DE SRT", job.germanSRT, job.id, "de")
                 }
                 if let audio = job.info?.audio, job.settings.mode == .video || job.settings.audioSource == .original || job.primaryIsAudio {
-                    Picker(job.settings.mode == .video ? "DE звук" : "Дорожка", selection: Binding(get: { job.germanIndex ?? -1 }, set: { index in model.mutate(job.id) { $0.germanIndex = index < 0 ? nil : index }; model.reanalyze(job.id) })) {
+                    Picker(localized(job.settings.mode == .video ? "DE звук" : "Дорожка", language: model.language), selection: Binding(get: { job.germanIndex ?? -1 }, set: { index in model.mutate(job.id) { $0.germanIndex = index < 0 ? nil : index }; model.reanalyze(job.id) })) {
                         Text("Выберите аудиодорожку…").tag(-1)
                         ForEach(audio, id: \.index) { stream in Text(stream.audioLabel).tag(stream.index) }
                     }
@@ -185,12 +195,12 @@ struct MainView: View {
             SettingsView(settings: model.settingsBinding(job.id), primaryIsAudio: job.primaryIsAudio).disabled(model.locked)
             if let plan = try? PlannedOutput(job, test: false) {
                 VStack(alignment: .leading, spacing: 5) {
-                    Text(plan.summary).font(.callout.weight(.medium)).foregroundStyle(accent)
+            Text(localizedUserText(plan.summary, language: model.language)).font(.callout.weight(.medium)).foregroundStyle(accent)
                     Text("Примерный размер: \(byteText(plan.estimatedBytes)) · Фактический размер зависит от видео.").font(.caption).foregroundStyle(.secondary)
                     if job.settings.mode == .video, (try? ExportPlan(job, test: false).copyVideo) == true { Text("Видеоряд сохранится без потерь; степень сжатия сейчас не применяется.").font(.caption).foregroundStyle(.secondary) }
                 }
             } else if job.info != nil { Text("Проверьте выбранные файлы, дорожку и формат экспорта.").foregroundStyle(.orange).font(.caption) }
-            Text(job.detail).font(.callout).foregroundStyle(statusColor(job.status)).textSelection(.enabled).fixedSize(horizontal: false, vertical: true)
+            Text(localizedUserText(job.detail, language: model.language)).font(.callout).foregroundStyle(statusColor(job.status)).textSelection(.enabled).fixedSize(horizontal: false, vertical: true)
             HStack {
                 if let output = job.output {
                     Button { model.show(output) } label: { Label("Результат в Finder", systemImage: "folder") }
@@ -200,12 +210,12 @@ struct MainView: View {
         }
     }
     func fact(_ title: String, _ value: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) { Text(title).font(.system(size: 9, weight: .semibold)).foregroundStyle(.secondary); Text(value).font(.callout.monospacedDigit()) }
+        VStack(alignment: .leading, spacing: 4) { Text(localized(title, language: model.language)).font(.system(size: 9, weight: .semibold)).foregroundStyle(.secondary); Text(value).font(.callout.monospacedDigit()) }
     }
     func fileRow(_ label: String, _ file: URL?, _ id: UUID, _ kind: String) -> some View {
         HStack(spacing: 10) {
-            Text(label).font(.caption.weight(.semibold)).frame(width: 55, alignment: .leading)
-            Text(file?.lastPathComponent ?? "Не выбран").font(.callout).foregroundStyle(file == nil ? Color.orange : Color.primary).lineLimit(1).truncationMode(.middle).help(file?.path ?? "")
+            Text(localized(label, language: model.language)).font(.caption.weight(.semibold)).frame(width: 55, alignment: .leading)
+                Text(file?.lastPathComponent ?? localized("Не выбран", language: model.language)).font(.callout).foregroundStyle(file == nil ? Color.orange : Color.primary).lineLimit(1).truncationMode(.middle).help(file?.path ?? "")
             Spacer(minLength: 0)
             Button("Выбрать…") { model.pickComponent(id, kind: kind) }
         }
@@ -214,11 +224,11 @@ struct MainView: View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 10) {
                 Image(systemName: "folder").foregroundStyle(accent)
-                Text(model.destination?.path ?? "«Готовое» рядом с каждым исходным видео").lineLimit(1).truncationMode(.middle).help(model.destination?.path ?? "")
+                Text(model.destination?.path ?? localized("«Готовое» рядом с каждым исходным видео", language: model.language)).lineLimit(1).truncationMode(.middle).help(model.destination?.path ?? "")
                 Button("Изменить…") { model.chooseDestination() }
                 if model.destination != nil { Button("По умолчанию") { model.destination = nil } }
                 Spacer()
-                Picker("Если файл есть", selection: $model.policy) { ForEach(ConflictPolicy.allCases) { Text($0.rawValue).tag($0) } }.frame(width: 270)
+                Picker("Если файл есть", selection: $model.policy) { ForEach(ConflictPolicy.allCases) { Text($0.title).tag($0) } }.frame(width: 270)
             }.disabled(model.locked)
             HStack {
                 Picker("Параллельная обработка", selection: $model.parallelism) { ForEach(Parallelism.allCases) { Text($0.title).tag($0) } }.frame(width: 350).disabled(model.locked)
@@ -244,26 +254,26 @@ struct SettingsView: View {
     var primaryIsAudio = false
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Picker("Сохранить", selection: $settings.mode) { ForEach(ExportMode.allCases) { Text($0.rawValue).tag($0) } }.pickerStyle(.segmented).disabled(primaryIsAudio)
+            Picker("Сохранить", selection: $settings.mode) { ForEach(ExportMode.allCases) { Text($0.title).tag($0) } }.pickerStyle(.segmented).disabled(primaryIsAudio)
             if settings.mode == .video {
             HStack {
                 Picker("Разрешение", selection: $settings.resolution) { ForEach(Resolution.allCases) { Text($0.title).tag($0) } }
-                Picker("Сжатие", selection: $settings.quality) { ForEach(Quality.allCases) { Text($0.rawValue).tag($0) } }.disabled(settings.resolution == .copy)
+                Picker("Сжатие", selection: $settings.quality) { ForEach(Quality.allCases) { Text($0.title).tag($0) } }.disabled(settings.resolution == .copy)
             }
             Toggle("Сжать заново даже при том же разрешении", isOn: $settings.recompress).disabled(settings.resolution == .copy)
             Toggle("Разрешить увеличение разрешения (деталей не добавляет)", isOn: $settings.upscale).disabled(settings.resolution == .copy || settings.resolution == .original)
             Toggle("Копировать готовый RU AAC-LC без перекодирования", isOn: $settings.copyRussianAAC)
                 Text(settings.resolution == .copy ? "Видео копируется без потерь; сжатие не применяется." : settings.resolution == .original ? "Размер кадра сохраняется. Для повторного сжатия включите переключатель выше." : "Выше исходного разрешения — только с разрешённым увеличением.").font(.caption).foregroundStyle(.secondary)
             } else {
-                if !primaryIsAudio { Picker("Источник звука", selection: $settings.audioSource) { ForEach(AudioSource.allCases) { Text($0.rawValue).tag($0) } } }
+                if !primaryIsAudio { Picker("Источник звука", selection: $settings.audioSource) { ForEach(AudioSource.allCases) { Text($0.title).tag($0) } } }
                 Picker("Формат и качество", selection: $settings.audioProfile) { ForEach(AudioProfile.allCases) { Text($0.title).tag($0) } }
                 if !settings.audioProfile.isMP3 {
-                    Picker("Расширение файла", selection: $settings.aacContainer) { ForEach(AACContainer.allCases) { Text($0.rawValue).tag($0) } }
+                    Picker("Расширение файла", selection: $settings.aacContainer) { ForEach(AACContainer.allCases) { Text($0.title).tag($0) } }
                     Text(settings.audioProfile.isCopy ? "Без потерь — только если выбранный исходный звук уже AAC." : "M4A содержит AAC и удобен для перемотки; .aac — чистый поток ADTS.").font(.caption).foregroundStyle(.secondary)
                 } else { Text("MP3 320 кбит/с — максимальный предлагаемый битрейт. Качество ограничено исходной записью.").font(.caption).foregroundStyle(.secondary) }
             }
             if settings.mode == .video || (!settings.audioProfile.isMP3 && !settings.audioProfile.isCopy) {
-                Picker("Кодировщик AAC", selection: $settings.aacEngine) { ForEach(AACEngine.allCases) { Text($0.rawValue).tag($0) } }
+                Picker("Кодировщик AAC", selection: $settings.aacEngine) { ForEach(AACEngine.allCases) { Text($0.title).tag($0) } }
             }
         }.font(.callout)
     }
@@ -274,33 +284,38 @@ struct SettingsView: View {
     let model = QueueModel()
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.regular)
-        let menu = NSMenu(), appItem = NSMenuItem(), appMenu = NSMenu()
-        appMenu.addItem(withTitle: "О программе «Сборка лекций»", action: #selector(about), keyEquivalent: "")
-        appMenu.addItem(withTitle: "Показать журналы", action: #selector(logs), keyEquivalent: "")
-        appMenu.addItem(.separator())
-        appMenu.addItem(withTitle: "Завершить «Сборка лекций»", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
-        appItem.submenu = appMenu; menu.addItem(appItem)
-        let fileItem = NSMenuItem(), fileMenu = NSMenu(title: "Проект")
-        fileMenu.addItem(withTitle: "Новый проект", action: #selector(newProject), keyEquivalent: "n")
-        fileMenu.addItem(.separator())
-        fileMenu.addItem(withTitle: "Открыть проект…", action: #selector(openProject), keyEquivalent: "o")
-        fileMenu.addItem(withTitle: "Сохранить проект", action: #selector(saveProject), keyEquivalent: "s")
-        let saveAs = fileMenu.addItem(withTitle: "Сохранить проект как…", action: #selector(saveProjectAs), keyEquivalent: "s")
-        saveAs.keyEquivalentModifierMask = [.command, .shift]
-        for item in fileMenu.items { item.target = self }
-        fileItem.submenu = fileMenu; menu.addItem(fileItem)
-        let edit = NSMenuItem(), editMenu = NSMenu(title: "Правка")
-        editMenu.addItem(withTitle: "Копировать", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
-        editMenu.addItem(withTitle: "Вставить", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
-        editMenu.addItem(withTitle: "Выбрать всё", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
-        edit.submenu = editMenu; menu.addItem(edit); NSApp.mainMenu = menu
+        updateLanguageChrome()
         window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1180, height: 830), styleMask: [.titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: false)
-        window.title = "Сборка лекций 2"; window.delegate = self
+        window.title = localized("Сборка лекций 2", language: model.language); window.delegate = self
         window.contentView = NSHostingView(rootView: MainView(model: model))
         window.center(); window.setFrameAutosaveName("OlyaAssembler2Main")
         window.makeKeyAndOrderFront(nil); NSApp.activate(ignoringOtherApps: true)
         let args = CommandLine.arguments.dropFirst()
         if !args.isEmpty { model.add(args.map { URL(fileURLWithPath: $0) }) }
+    }
+    func updateLanguageChrome() {
+        let menu = NSMenu(), appItem = NSMenuItem(), appMenu = NSMenu()
+        appMenu.addItem(withTitle: localized("О программе «Сборка лекций»", language: model.language), action: #selector(about), keyEquivalent: "")
+        appMenu.addItem(withTitle: localized("Показать журналы", language: model.language), action: #selector(logs), keyEquivalent: "")
+        appMenu.addItem(.separator())
+        appMenu.addItem(withTitle: localized("Завершить «Сборка лекций»", language: model.language), action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        appItem.title = localized("Сборка лекций", language: model.language)
+        appItem.submenu = appMenu; menu.addItem(appItem)
+        let fileItem = NSMenuItem(), fileMenu = NSMenu(title: localized("Проект", language: model.language))
+        fileMenu.addItem(withTitle: localized("Новый проект", language: model.language), action: #selector(newProject), keyEquivalent: "n")
+        fileMenu.addItem(.separator())
+        fileMenu.addItem(withTitle: localized("Открыть проект…", language: model.language), action: #selector(openProject), keyEquivalent: "o")
+        fileMenu.addItem(withTitle: localized("Сохранить проект", language: model.language), action: #selector(saveProject), keyEquivalent: "s")
+        let saveAs = fileMenu.addItem(withTitle: localized("Сохранить проект как…", language: model.language), action: #selector(saveProjectAs), keyEquivalent: "s")
+        saveAs.keyEquivalentModifierMask = [.command, .shift]
+        for item in fileMenu.items { item.target = self }
+        fileItem.submenu = fileMenu; menu.addItem(fileItem)
+        let edit = NSMenuItem(), editMenu = NSMenu(title: localized("Правка", language: model.language))
+        editMenu.addItem(withTitle: localized("Копировать", language: model.language), action: #selector(NSText.copy(_:)), keyEquivalent: "c")
+        editMenu.addItem(withTitle: localized("Вставить", language: model.language), action: #selector(NSText.paste(_:)), keyEquivalent: "v")
+        editMenu.addItem(withTitle: localized("Выбрать всё", language: model.language), action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
+        edit.submenu = editMenu; menu.addItem(edit); NSApp.mainMenu = menu
+        if window != nil { window.title = localized("Сборка лекций 2", language: model.language) }
     }
     func application(_ application: NSApplication, open urls: [URL]) {
         if let project = urls.first(where: { $0.pathExtension == "olyalecture" }) { model.openProject(project) }
@@ -309,9 +324,9 @@ struct SettingsView: View {
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { true }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         guard model.busy else { return model.confirmDiscard() ? .terminateNow : .terminateCancel }
-        let alert = NSAlert(); alert.messageText = "Остановить сборку и выйти?"
-        alert.informativeText = "Текущий временный MP4 будет удалён. Готовые результаты сохранятся."
-        alert.addButton(withTitle: "Остановить и выйти"); alert.addButton(withTitle: "Продолжить сборку")
+        let alert = NSAlert(); alert.messageText = localized("Остановить сборку и выйти?", language: model.language)
+        alert.informativeText = localized("Текущий временный MP4 будет удалён. Готовые результаты сохранятся.", language: model.language)
+        alert.addButton(withTitle: localized("Остановить и выйти", language: model.language)); alert.addButton(withTitle: localized("Продолжить сборку", language: model.language))
         guard alert.runModal() == .alertFirstButtonReturn else { return .terminateCancel }
         model.stop()
         Task {
@@ -324,8 +339,8 @@ struct SettingsView: View {
         NSApp.terminate(nil); return false
     }
     @objc func about() {
-        let alert = NSAlert(); alert.messageText = "Сборка лекций · \(applicationVersion)"
-        alert.informativeText = "Отдельное приложение для готовых лекций. Перевод и синтез речи не выполняются.\n\nFFmpeg / FFprobe 9.0.1 и LAME 4.0 для MP3, LGPL. Исходный код, лицензии и скрипт пересборки находятся в папке проекта vendor и в ресурсах приложения.\nhttps://ffmpeg.org · https://lame.sourceforge.io"
+        let alert = NSAlert(); alert.messageText = "\(localized("Сборка лекций", language: model.language)) · \(applicationVersion)"
+        alert.informativeText = localized("Отдельное приложение для готовых лекций. Перевод и синтез речи не выполняются.\n\nFFmpeg / FFprobe 9.0.1 и LAME 4.0 для MP3, LGPL. Исходный код, лицензии и скрипт пересборки находятся в папке проекта vendor и в ресурсах приложения.\nhttps://ffmpeg.org · https://lame.sourceforge.io", language: model.language)
         alert.runModal()
     }
     @objc func logs() {

@@ -149,7 +149,7 @@ struct MediaStream: Decodable {
     var isAACLC: Bool { codec_name == "aac" && ["LC", "1"].contains(profile ?? "") }
     var canCopyAudio: Bool { isAACLC && (channels ?? 99) <= 2 }
     var audioLabel: String {
-        "Дорожка \(index) · \(language) · \(codec_name ?? "?") · \(channels ?? 0) кан.\(tags?["title"].map { " · " + $0 } ?? "")"
+        "\(localized("Дорожка")) \(index) · \(language) · \(codec_name ?? "?") · \(channels ?? 0) \(localized("кан."))\(tags?["title"].map { " · " + $0 } ?? "")"
     }
 }
 
@@ -183,13 +183,14 @@ enum Resolution: String, CaseIterable, Identifiable, Codable {
     case copy, original, p144, p240, p360, p480, p720, p1080, p1440, p2160
     var id: String { rawValue }
     var title: String {
-        switch self { case .copy: return "Без перекодирования"; case .original: return "Исходное разрешение"; case .p1440: return "1440p · QHD"; case .p2160: return "2160p · 4K"; default: return String(rawValue.dropFirst()) + "p" }
+        switch self { case .copy: return localized("Без перекодирования"); case .original: return localized("Исходное разрешение"); case .p1440: return "1440p · QHD"; case .p2160: return "2160p · 4K"; default: return String(rawValue.dropFirst()) + "p" }
     }
     var height: Int? { Int(rawValue.dropFirst()) }
 }
 enum Quality: String, CaseIterable, Identifiable, Codable {
     case compact = "Компактно", balanced = "Баланс", clear = "Чётче"
     var id: String { rawValue }
+    var title: String { localized(rawValue) }
     func kbps(height: Int) -> Int {
         let base: Double = height <= 144 ? 180 : height <= 240 ? 450 : height <= 360 ? 800 : height <= 480 ? 1300 : height <= 720 ? 2400 : height <= 1080 ? 4500 : height <= 1440 ? 8000 : 16000
         return Int(base * (self == .compact ? 0.65 : self == .clear ? 1.5 : 1))
@@ -210,6 +211,7 @@ struct ExportSettings: Codable {
 enum JobStatus: String {
     case analyzing = "Анализ", ready = "Готова", missing = "Нет файлов", ambiguous = "Выберите файл", review = "Нужна проверка"
     case running = "Обработка", validating = "Проверка результата", completed = "Завершена", failed = "Ошибка", stopped = "Остановлена", skipped = "Пропущена"
+    var localizedTitle: String { localized(rawValue) }
 }
 struct Lecture: Identifiable {
     var id = UUID()
@@ -345,21 +347,25 @@ struct ExportPlan {
     let videoKbps: Int
     let estimatedBytes: Int64
     let test: Bool
-    var description: String { "\(width)×\(height) · \(copyVideo ? "копирование видео" : "H.264 · Apple VideoToolbox") · RU \(copyRussianAudio ? "AAC без перекодирования" : "AAC 128 кбит/с")" }
+    var description: String {
+        localizedFormat("%d×%d · %@ · RU %@", width, height,
+                        localized(copyVideo ? "копирование видео" : "H.264 · Apple VideoToolbox"),
+                        localized(copyRussianAudio ? "AAC без перекодирования" : "AAC 128 кбит/с"))
+    }
     var russianAudioDescription: String {
         let russianDuration = job.russianInfo?.duration ?? 0
         let shortfall = duration - russianDuration
         let matchesSRT = job.russianSRTEnd.map { abs($0 - russianDuration) <= 0.5 } == true
         if copyRussianAudio {
             if shortfall > 0.05 && matchesSRT {
-                return "Озвучка совпадает с SRT. После последней реплики остаётся \(String(format: "%.2f", shortfall)) с видео без русской речи. RU AAC-LC копируется без перекодирования."
+                return localizedFormat("Озвучка совпадает с SRT. После последней реплики остаётся %@ с видео без русской речи. RU AAC-LC копируется без перекодирования.", String(format: "%.2f", shortfall))
             }
-            let tail = shortfall > 0.05 ? " После окончания RU остаётся \(String(format: "%.2f", shortfall)) с видео без русской речи; конец видео сохраняется." : ""
-            return "RU AAC-LC копируется без перекодирования и потери качества; сохраняются исходные частота и каналы." + tail
+            let tail = shortfall > 0.05 ? " " + localizedFormat("После окончания RU остаётся %@ с видео без русской речи; конец видео сохраняется.", String(format: "%.2f", shortfall)) : ""
+            return localized("RU AAC-LC копируется без перекодирования и потери качества; сохраняются исходные частота и каналы.") + tail
         }
-        if shortfall > 0.05 { return "RU будет закодирован в AAC-LC: конец дополнится тишиной на \(String(format: "%.2f", shortfall)) с." }
-        if !job.settings.copyRussianAAC { return "RU будет заново закодирован в AAC-LC: копирование отключено в настройках." }
-        return "RU будет закодирован в AAC-LC. Без перекодирования принимается готовый AAC-LC в M4A/MP4, моно или стерео."
+        if shortfall > 0.05 { return localizedFormat("RU будет закодирован в AAC-LC: конец дополнится тишиной на %@ с.", String(format: "%.2f", shortfall)) }
+        if !job.settings.copyRussianAAC { return localized("RU будет заново закодирован в AAC-LC: копирование отключено в настройках.") }
+        return localized("RU будет закодирован в AAC-LC. Без перекодирования принимается готовый AAC-LC в M4A/MP4, моно или стерео.")
     }
     var filename: String {
         let base = job.basename.replacingOccurrences(of: "_[0-9]{3,4}p$", with: "", options: .regularExpression)
@@ -429,6 +435,7 @@ struct ExportPlan {
 enum ConflictPolicy: String, CaseIterable, Identifiable, Codable {
     case copy = "Сохранить копию", skip = "Пропустить", replace = "Заменить"
     var id: String { rawValue }
+    var title: String { localized(rawValue) }
 }
 
 enum Subtitles {

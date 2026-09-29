@@ -1,5 +1,7 @@
 # LectureMerge — руководство пользователя
 
+[Руководство пользователя](https://popovantondev.github.io/LectureMerge/Guide-ru.html)
+
 [Скачать для macOS](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English](../en/README.md) · [Deutsch](../de/README.md) · [Русский](README.md)
 
 LectureMerge объединяет видео лекции, русскую озвучку, оригинальный звук и субтитры в MP4. Также можно отдельно экспортировать одну аудиодорожку в AAC или MP3. Обработка выполняется локально на Mac, без онлайн-сервисов. **Версия 2.2.0 · macOS 14 или новее · Apple Silicon.**

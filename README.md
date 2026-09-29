@@ -55,4 +55,4 @@ The original source code is published for public viewing only; no open-source li
 
 ## Feedback
 
-Bug reports and suggestions are welcome in English, German, or Russian through [GitHub Issues](https://github.com/popovantondev/LectureMerge/issues). Include the app and macOS versions; remove personal paths, lecture files, and subtitle text from reports.
+Bug reports and suggestions are welcome in English, German, or Russian through [GitHub Issues](https://github.com/popovantondev/LectureMerge/issues/new/choose). Include the app and macOS versions; remove personal paths, lecture files, and subtitle text from reports.

@@ -1,5 +1,7 @@
 # LectureMerge – Benutzerhandbuch
 
+[Benutzerhandbuch](https://popovantondev.github.io/LectureMerge/Guide-de.html)
+
 [Für macOS laden](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English](../en/README.md) · [Deutsch](README.md) · [Русский](../ru/README.md)
 
 LectureMerge fügt Vorlesungsvideo, russische Vertonung, Originalton und Untertitel in einer MP4-Datei zusammen. Außerdem kann eine Audiospur separat als AAC oder MP3 exportiert werden. Die Verarbeitung erfolgt lokal auf dem Mac; ein Online-Dienst wird nicht verwendet. **Version 2.2.0 · macOS 14 oder neuer · Apple Silicon.**

@@ -1,5 +1,7 @@
 # LectureMerge
 
+[User guide](https://popovantondev.github.io/LectureMerge/Guide-en.html)
+
 [Download for macOS](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English guide](docs/en/README.md) · [Deutsches Handbuch](docs/de/README.md) · [Русское руководство](docs/ru/README.md)
 
 <img src="Assets/AppIcon-1024.png" width="112" alt="LectureMerge app icon">

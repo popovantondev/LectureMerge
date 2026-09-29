@@ -6,8 +6,8 @@ private let applicationVersion = Bundle.main.object(forInfoDictionaryKey: "CFBun
 
 private let accent = Color(nsColor: NSColor(name: "LectureAccent") { appearance in
     appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
-        ? NSColor(srgbRed: 0.30, green: 0.78, blue: 0.76, alpha: 1)
-        : NSColor(srgbRed: 0.08, green: 0.48, blue: 0.48, alpha: 1)
+        ? NSColor(srgbRed: 0.42, green: 0.67, blue: 1.0, alpha: 1)
+        : NSColor(srgbRed: 0.027, green: 0.365, blue: 0.82, alpha: 1)
 })
 
 struct MainView: View {
@@ -359,3 +359,4 @@ struct SettingsView: View {
         withExtendedLifetime(delegate) { app.run() }
     }
 }
+

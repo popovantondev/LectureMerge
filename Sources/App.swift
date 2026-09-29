@@ -359,4 +359,3 @@ struct SettingsView: View {
         withExtendedLifetime(delegate) { app.run() }
     }
 }
-

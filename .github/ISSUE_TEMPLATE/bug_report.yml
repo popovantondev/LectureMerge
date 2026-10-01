@@ -1,0 +1,45 @@
+name: "Bug report · English"
+description: "Report a reproducible problem."
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "Do not include passwords, tokens, session files, private paths or personal data. Use synthetic examples and redact screenshots."
+  - type: input
+    id: version
+    attributes:
+      label: "Application version"
+      placeholder: "2.2.0"
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: "Operating system and hardware"
+      placeholder: "macOS 14+ · Apple Silicon"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to reproduce"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected result"
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: "Actual result"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: "Sanitized error message or screenshot"
+    validations:
+      required: false

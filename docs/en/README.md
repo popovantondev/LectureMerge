@@ -1,6 +1,22 @@
 # LectureMerge user guide
 
-[User guide](https://popovantondev.github.io/LectureMerge/Guide-en.html)
+<!-- public-release:start -->
+Combine lecture video, narration, original audio and subtitles into MP4, or export audio.
+
+**macOS 14+ · Apple Silicon · Release 2.2.0**
+
+**[Download](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0)** · **[User guide](https://popovantondev.github.io/LectureMerge/Guide-en.html)** · **[Report a problem](https://github.com/popovantondev/LectureMerge/issues/new/choose)**
+
+**Requirements and limitations:** Local processing without an external service. Ad-hoc signed and not notarized by Apple.
+
+**First steps:** Extract the app archive and add video, audio and subtitles. Check a 30-second sample before the full export.
+
+**Application files:**
+
+- [`LectureMerge-v2.2.0-macos-arm64.zip`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/LectureMerge-v2.2.0-macos-arm64.zip)
+
+**Checksums:** [`SHA256SUMS`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS)
+<!-- public-release:end -->
 
 [Download for macOS](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English](README.md) · [Deutsch](../de/README.md) · [Русский](../ru/README.md)
 

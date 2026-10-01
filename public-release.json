@@ -1,0 +1,84 @@
+{
+  "name": "LectureMerge",
+  "version": "2.2.0",
+  "platform": "macOS 14+ · Apple Silicon",
+  "tag": "v2.2.0",
+  "description": {
+    "ru": "Объединяет видео лекции, озвучку, исходное аудио и субтитры в MP4; также экспортирует аудио.",
+    "de": "Verbindet Vorlesungsvideo, Sprachausgabe, Originalton und Untertitel als MP4; exportiert auch Audio.",
+    "en": "Combine lecture video, narration, original audio and subtitles into MP4, or export audio."
+  },
+  "requirements": {
+    "ru": "Обработка локальная; внешний сервис не нужен. Приложение подписано ad-hoc и не нотарифицировано Apple.",
+    "de": "Lokale Verarbeitung ohne externen Dienst. Ad-hoc signiert, keine Apple-Notarisierung.",
+    "en": "Local processing without an external service. Ad-hoc signed and not notarized by Apple."
+  },
+  "start": {
+    "ru": "Распакуйте архив приложения, добавьте видео, аудио и субтитры. Проверьте 30-секундный фрагмент перед полным экспортом.",
+    "de": "App-Archiv entpacken, Video, Audio und Untertitel hinzufügen. Vor dem vollständigen Export einen 30-Sekunden-Ausschnitt prüfen.",
+    "en": "Extract the app archive and add video, audio and subtitles. Check a 30-second sample before the full export."
+  },
+  "schema_version": 1,
+  "repo": "LectureMerge",
+  "source_url": "https://github.com/popovantondev/LectureMerge",
+  "readmes": {
+    "en": [
+      "README.md",
+      "docs/en/README.md"
+    ],
+    "de": [
+      "docs/de/README.md"
+    ],
+    "ru": [
+      "docs/ru/README.md"
+    ]
+  },
+  "guides": {
+    "ru": "Guide-ru.html",
+    "de": "Guide-de.html",
+    "en": "Guide-en.html"
+  },
+  "help_url": "https://popovantondev.github.io/LectureMerge/Guide-{lang}.html",
+  "feedback_url": "https://github.com/popovantondev/LectureMerge/issues/new/choose",
+  "status": "release",
+  "release_url": "https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0",
+  "assets": [
+    {
+      "name": "LectureMerge-v2.2.0-macos-arm64.zip",
+      "size": 35160166,
+      "url": "https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/LectureMerge-v2.2.0-macos-arm64.zip"
+    },
+    {
+      "name": "LectureMerge-v2.2.0-source.zip",
+      "size": 2435386,
+      "url": "https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/LectureMerge-v2.2.0-source.zip"
+    },
+    {
+      "name": "manifest.json",
+      "size": 3869,
+      "url": "https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/manifest.json"
+    },
+    {
+      "name": "RELEASE.md",
+      "size": 1231,
+      "url": "https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/RELEASE.md"
+    },
+    {
+      "name": "SHA256SUMS",
+      "size": 356,
+      "url": "https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS"
+    }
+  ],
+  "downloads": [
+    "LectureMerge-v2.2.0-macos-arm64.zip"
+  ],
+  "checksums": [
+    "SHA256SUMS"
+  ],
+  "version_files": [
+    {
+      "path": "VERSION",
+      "pattern": "^\\s*(\\S+)\\s*$"
+    }
+  ]
+}

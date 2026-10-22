@@ -1,0 +1,32 @@
+{
+  "folder": ".",
+  "shots": {
+    "ru": "docs/ru/screenshots/main.png",
+    "de": "docs/de/screenshots/main.png",
+    "en": "docs/en/screenshots/main.png"
+  },
+  "icon": "presentation-icon.png",
+  "palette": {
+    "accent": "#216c55",
+    "tint": "#e6f3ee",
+    "hero": "#14392e",
+    "hero-end": "#2c6754"
+  },
+  "flow": {
+    "ru": [
+      "Видео + озвучка + субтитры",
+      "Проверить параметры",
+      "Сохранить MP4"
+    ],
+    "de": [
+      "Video + Ton + Untertitel",
+      "Einstellungen prüfen",
+      "MP4 speichern"
+    ],
+    "en": [
+      "Video + narration + subtitles",
+      "Review settings",
+      "Save MP4"
+    ]
+  }
+}

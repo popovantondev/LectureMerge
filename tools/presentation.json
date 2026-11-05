@@ -28,5 +28,163 @@
       "Review settings",
       "Save MP4"
     ]
+  },
+  "stack": "Swift · AppKit",
+  "kit": "Assets/kit",
+  "palette_dark": {
+    "accent": "#6fd0aa",
+    "accent-ink": "#07281d",
+    "tint": "#123629",
+    "hero": "#14392e",
+    "hero-end": "#2c6754"
+  },
+  "bento": {
+    "de": {
+      "inst_text": "Die Schritte aus „Erste Schritte“ im Handbuch, im Terminal.",
+      "term": [
+        [
+          "ps",
+          "$ shasum -a 256 LectureMerge-v{v}-macos-arm64.zip"
+        ],
+        [
+          "dim",
+          "# Wert mit SHA256SUMS aus dem Release vergleichen"
+        ],
+        [
+          "ps",
+          "$ unzip LectureMerge-v{v}-macos-arm64.zip"
+        ],
+        [
+          "dim",
+          "# Ad-hoc signiert, nicht notarisiert: macOS kann beim ersten Öffnen warnen"
+        ],
+        [
+          "ok",
+          "→ Ordner oder Dateien hinzufügen, zuerst den 30-Sekunden-Test erstellen"
+        ]
+      ],
+      "tile": {
+        "title": "Läuft lokal",
+        "text": "Die Verarbeitung läuft auf Ihrem Mac mit eingebautem FFmpeg und LAME. Kein Konto, kein Webserver, keine externe API; die Quelldateien bleiben unverändert.",
+        "live": "Lokal · offline"
+      },
+      "features": [
+        "Oberfläche RU · DE · EN",
+        "MP4 mit H.264 und AAC",
+        "Umschaltbare RU-/DE-Untertitel",
+        "Kompatibles AAC-LC ohne Neukodierung",
+        "Originalton als eigene Spur",
+        "144p bis 4K",
+        "Nur Audio: AAC oder MP3 bis 320 kbit/s",
+        "Bis zu vier Aufträge parallel",
+        "Projekte speichern",
+        "30-Sekunden-Test"
+      ],
+      "checks": [
+        "Automatische Prüfungen auf GitHub Actions (macOS 15): Metadaten, Lokalisierung, Swift-Typprüfung",
+        "Lokale Prüfungen laut Prüfbericht zu 2.2.0: Check- und Testskripte, Vorschau-Build, Signaturprüfung",
+        "Übersetzungen RU · DE · EN auf Vollständigkeit und Platzhalter geprüft",
+        "SHA-256-Prüfsummen (SHA256SUMS) und manifest.json im Release",
+        "Version {v} mit Änderungsprotokoll"
+      ]
+    },
+    "en": {
+      "inst_text": "The steps from “First steps” in the guide, in Terminal.",
+      "term": [
+        [
+          "ps",
+          "$ shasum -a 256 LectureMerge-v{v}-macos-arm64.zip"
+        ],
+        [
+          "dim",
+          "# Compare the value with SHA256SUMS from the release"
+        ],
+        [
+          "ps",
+          "$ unzip LectureMerge-v{v}-macos-arm64.zip"
+        ],
+        [
+          "dim",
+          "# Ad-hoc signed, not notarized: macOS may warn on first launch"
+        ],
+        [
+          "ok",
+          "→ Add a folder or files, create the 30-second test first"
+        ]
+      ],
+      "tile": {
+        "title": "Runs locally",
+        "text": "Processing runs on your Mac with built-in FFmpeg and LAME. No account, no web server, no external API; your source files stay unchanged.",
+        "live": "Local · offline"
+      },
+      "features": [
+        "Interface RU · DE · EN",
+        "MP4 with H.264 and AAC",
+        "Switchable RU/DE subtitles",
+        "Compatible AAC-LC without re-encoding",
+        "Original audio as its own track",
+        "144p to 4K",
+        "Audio only: AAC or MP3 up to 320 kbit/s",
+        "Up to four jobs in parallel",
+        "Save projects",
+        "30-second test"
+      ],
+      "checks": [
+        "Automatic checks on GitHub Actions (macOS 15): metadata, localization, Swift type check",
+        "Local checks per the 2.2.0 verification report: check and test scripts, preview build, signature verification",
+        "RU · DE · EN translations checked for completeness and placeholders",
+        "SHA-256 checksums (SHA256SUMS) and manifest.json in the release",
+        "Version {v} with changelog"
+      ]
+    },
+    "ru": {
+      "inst_text": "Шаги из «Первых шагов» руководства, в Терминале.",
+      "term": [
+        [
+          "ps",
+          "$ shasum -a 256 LectureMerge-v{v}-macos-arm64.zip"
+        ],
+        [
+          "dim",
+          "# Сверить значение с SHA256SUMS из релиза"
+        ],
+        [
+          "ps",
+          "$ unzip LectureMerge-v{v}-macos-arm64.zip"
+        ],
+        [
+          "dim",
+          "# Подписано ad-hoc, не нотаризовано: при первом открытии macOS может предупредить"
+        ],
+        [
+          "ok",
+          "→ Добавить папку или файлы, сначала сделать 30-секундный тест"
+        ]
+      ],
+      "tile": {
+        "title": "Работает локально",
+        "text": "Обработка идёт на вашем Mac со встроенными FFmpeg и LAME. Без аккаунта, веб-сервера и внешнего API; исходные файлы не меняются.",
+        "live": "Локально · офлайн"
+      },
+      "features": [
+        "Интерфейс RU · DE · EN",
+        "MP4 с H.264 и AAC",
+        "Переключаемые субтитры RU/DE",
+        "Совместимый AAC-LC без перекодирования",
+        "Оригинальный звук отдельной дорожкой",
+        "От 144p до 4K",
+        "Только звук: AAC или MP3 до 320 кбит/с",
+        "До четырёх заданий параллельно",
+        "Сохранение проектов",
+        "30-секундный тест"
+      ],
+      "checks": [
+        "Автоматические проверки в GitHub Actions (macOS 15): метаданные, локализация, проверка типов Swift",
+        "Локальные проверки по отчёту о версии 2.2.0: скрипты проверки и тестов, предварительная сборка, проверка подписи",
+        "Переводы RU · DE · EN проверены на полноту и параметры подстановки",
+        "Контрольные суммы SHA-256 (SHA256SUMS) и manifest.json в релизе",
+        "Версия {v} и журнал изменений"
+      ]
+    }
   }
 }

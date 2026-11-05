@@ -1,61 +1,63 @@
 # LectureMerge
 
 <!-- public-release:start -->
-Combine lecture video, narration, original audio and subtitles into MP4, or export audio.
+Verbindet Vorlesungsvideo, Sprachausgabe, Originalton und Untertitel als MP4; exportiert auch Audio.
 
 **macOS 14+ · Apple Silicon · Release 2.2.0**
 
-**[Download](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0)** · **[User guide](https://popovantondev.github.io/LectureMerge/Guide-en.html)** · **[Report a problem](https://github.com/popovantondev/LectureMerge/issues/new/choose)**
+**[Herunterladen](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0)** · **[Anleitung](https://popovantondev.github.io/LectureMerge/Guide-de.html)** · **[Fehler melden](https://github.com/popovantondev/LectureMerge/issues/new/choose)**
 
-**Requirements and limitations:** Local processing without an external service. Ad-hoc signed and not notarized by Apple.
+**Voraussetzungen und Grenzen:** Lokale Verarbeitung ohne externen Dienst. Ad-hoc signiert, keine Apple-Notarisierung.
 
-**First steps:** Extract the app archive and add video, audio and subtitles. Check a 30-second sample before the full export.
+**Erste Schritte:** App-Archiv entpacken, Video, Audio und Untertitel hinzufügen. Vor dem vollständigen Export einen 30-Sekunden-Ausschnitt prüfen.
 
-**Application files:**
+**App-Dateien:**
 
 - [`LectureMerge-v2.2.0-macos-arm64.zip`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/LectureMerge-v2.2.0-macos-arm64.zip)
 
-**Checksums:** [`SHA256SUMS`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS)
+**Prüfsummen:** [`SHA256SUMS`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS)
 <!-- public-release:end -->
 
-[Download for macOS](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English guide](docs/en/README.md) · [Deutsches Handbuch](docs/de/README.md) · [Русское руководство](docs/ru/README.md)
+**Deutsch** · [Русский](README.ru.md) · [English](README.en.md)
 
-<img src="Assets/AppIcon-1024.png" width="112" alt="LectureMerge app icon">
+[Für macOS herunterladen](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [Deutsches Handbuch](docs/de/README.md) · [English guide](docs/en/README.md) · [Русское руководство](docs/ru/README.md)
 
-**macOS 14 or later · Apple Silicon · Version 2.2.0**
+<img src="Assets/AppIcon-1024.png" width="112" alt="App-Symbol von LectureMerge">
 
-LectureMerge combines lecture video, Russian narration, original audio, and subtitles in one MP4 file. It can also export audio as AAC or MP3. The app works locally on your Mac and does not require an internet connection or an online API.
+**macOS 14 oder neuer · Apple Silicon · Version 2.2.0**
 
-![LectureMerge with its English interface](docs/en/screenshots/main.png)
+LectureMerge führt Vorlesungsvideo, russische Vertonung, Originalton und Untertitel in einer MP4-Datei zusammen. Außerdem kann die App Audio als AAC oder MP3 exportieren. Sie arbeitet lokal auf Ihrem Mac und benötigt weder eine Internetverbindung noch eine Online-API.
 
-## Features
+![LectureMerge mit deutscher Oberfläche](docs/de/screenshots/main.png)
 
-- Switch the interface between Russian, German, and English. The choice is saved for later launches.
-- Create MP4 files with H.264 video, AAC audio, and switchable Russian and German subtitles.
-- Copy compatible AAC-LC narration without re-encoding.
-- Keep the original German audio as a separate track.
-- Resize from 144p to 4K, preserve the original dimensions, or copy compatible H.264 without re-encoding.
-- Export AAC or MP3 audio, including AAC copy mode and MP3 up to 320 kbit/s.
-- Process up to four queue items at once, save projects, and run a 30-second test before a full export.
+## Funktionen
 
-## Download
+- Die Oberfläche lässt sich zwischen Russisch, Deutsch und Englisch umschalten. Die Wahl bleibt für spätere Starts gespeichert.
+- MP4-Dateien mit H.264-Video, AAC-Audio und umschaltbaren russischen und deutschen Untertiteln erstellen.
+- Kompatible AAC-LC-Vertonung ohne Neukodierung übernehmen.
+- Den deutschen Originalton als eigene Spur behalten.
+- Von 144p bis 4K skalieren, die Originalgröße beibehalten oder kompatibles H.264 ohne Neukodierung kopieren.
+- Audio als AAC oder MP3 exportieren, einschließlich AAC-Kopiermodus und MP3 bis 320 kbit/s.
+- Bis zu vier Warteschlangeneinträge gleichzeitig verarbeiten, Projekte speichern und vor dem vollständigen Export einen 30-Sekunden-Test erstellen.
 
-Version 2.2.0 is available from the [GitHub Releases page](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0). Release packages include the app, source archive, manifest, checksums, and third-party notices.
+## Herunterladen
 
-The app supports Apple Silicon Macs running macOS 14 or later. It is ad-hoc signed and is not notarized by Apple. Start with the guide for your interface language: [English](docs/en/README.md) · [Deutsch](docs/de/README.md) · [Русский](docs/ru/README.md).
+Version 2.2.0 finden Sie auf der [GitHub-Releases-Seite](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0). Die Release-Pakete enthalten die App, das Quellarchiv, das Manifest, Prüfsummen und Hinweise zu Drittanbieter-Software.
 
-## Documentation
+Die App unterstützt Apple-Silicon-Macs mit macOS 14 oder neuer. Sie ist ad-hoc signiert und nicht von Apple notarisiert. Beginnen Sie mit dem Handbuch in Ihrer Oberflächensprache: [English](docs/en/README.md) · [Deutsch](docs/de/README.md) · [Русский](docs/ru/README.md).
 
-- User guides with a screenshot in the matching interface language: [English](docs/en/README.md), [Deutsch](docs/de/README.md), [Русский](docs/ru/README.md)
-- Build and test: [EN](docs/en/BUILD.md) · [DE](docs/de/BUILD.md) · [RU](docs/ru/BUILD.md)
-- Architecture: [EN](docs/en/ARCHITECTURE.md) · [DE](docs/de/ARCHITECTURE.md) · [RU](docs/ru/ARCHITECTURE.md)
-- Rights: [EN](docs/en/RIGHTS.md) · [DE](docs/de/RIGHTS.md) · [RU](docs/ru/RIGHTS.md)
-- Third-party notices: [EN](docs/en/THIRD_PARTY_NOTICES.md) · [DE](docs/de/THIRD_PARTY_NOTICES.md) · [RU](docs/ru/THIRD_PARTY_NOTICES.md)
-- Changelog: [EN](docs/en/CHANGELOG.md) · [DE](docs/de/CHANGELOG.md) · [RU](docs/ru/CHANGELOG.md)
+## Dokumentation
 
-## Build from source
+- Handbücher mit Screenshot in der jeweiligen Oberflächensprache: [English](docs/en/README.md), [Deutsch](docs/de/README.md), [Русский](docs/ru/README.md)
+- Build und Tests: [EN](docs/en/BUILD.md) · [DE](docs/de/BUILD.md) · [RU](docs/ru/BUILD.md)
+- Architektur: [EN](docs/en/ARCHITECTURE.md) · [DE](docs/de/ARCHITECTURE.md) · [RU](docs/ru/ARCHITECTURE.md)
+- Rechte: [EN](docs/en/RIGHTS.md) · [DE](docs/de/RIGHTS.md) · [RU](docs/ru/RIGHTS.md)
+- Drittanbieter-Hinweise: [EN](docs/en/THIRD_PARTY_NOTICES.md) · [DE](docs/de/THIRD_PARTY_NOTICES.md) · [RU](docs/ru/THIRD_PARTY_NOTICES.md)
+- Änderungsprotokoll: [EN](docs/en/CHANGELOG.md) · [DE](docs/de/CHANGELOG.md) · [RU](docs/ru/CHANGELOG.md)
 
-On an Apple Silicon Mac with Apple Command Line Tools installed:
+## Aus dem Quellcode bauen
+
+Auf einem Apple-Silicon-Mac mit installierten Apple Command Line Tools:
 
 ```bash
 bash Scripts/check.sh
@@ -63,12 +65,12 @@ bash Scripts/test.sh
 bash Scripts/build.sh --preview
 ```
 
-See the guide in your language for build requirements and verification details. CI checks project metadata and Swift types on macOS; hardware media encoding is verified locally.
+Voraussetzungen für den Build und Einzelheiten zur Prüfung stehen im Handbuch in Ihrer Sprache. Die CI prüft auf macOS Projekt-Metadaten und Swift-Typen; die Hardware-Medienkodierung wird lokal geprüft.
 
-## Rights and third-party software
+## Rechte und Drittanbieter-Software
 
-The original source code is published for public viewing only; no open-source license is granted. Individuals may download and run an unmodified release binary for personal use. Read the notices in [English](docs/en/RIGHTS.md) · [Deutsch](docs/de/RIGHTS.md) · [Русский](docs/ru/RIGHTS.md), and the [third-party notices](docs/en/THIRD_PARTY_NOTICES.md). The licenses for bundled components continue to apply to those components.
+Der ursprüngliche Quellcode ist ausschließlich zur öffentlichen Ansicht veröffentlicht; es wird keine Open-Source-Lizenz erteilt. Privatpersonen dürfen ein unverändertes Release-Programm herunterladen und für den persönlichen Gebrauch ausführen. Lesen Sie die Hinweise auf [Englisch](docs/en/RIGHTS.md) · [Deutsch](docs/de/RIGHTS.md) · [Russisch](docs/ru/RIGHTS.md) sowie die [Drittanbieter-Hinweise](docs/de/THIRD_PARTY_NOTICES.md). Für gebündelte Komponenten gelten weiterhin deren eigene Lizenzen.
 
-## Feedback
+## Rückmeldungen
 
-Bug reports and suggestions are welcome in English, German, or Russian through [GitHub Issues](https://github.com/popovantondev/LectureMerge/issues/new/choose). Include the app and macOS versions; remove personal paths, lecture files, and subtitle text from reports.
+Fehlerberichte und Vorschläge sind auf Englisch, Deutsch oder Russisch über [GitHub Issues](https://github.com/popovantondev/LectureMerge/issues/new/choose) willkommen. Nennen Sie die App- und macOS-Version und entfernen Sie persönliche Pfade, Vorlesungsdateien und Untertiteltexte aus Meldungen.

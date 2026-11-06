@@ -1,6 +1,10 @@
+<div align="center">
+  <img src="Assets/AppIcon-1024.png" width="128" alt="LectureMerge icon">
+</div>
+
 # LectureMerge
 
-[Deutsch](README.md) · [Русский](README.ru.md) · **English**
+[Русский](README.ru.md) · [Deutsch](README.md) · **English**
 
 <!-- public-release:start -->
 Combine lecture video, narration, original audio and subtitles into MP4, or export audio.
@@ -20,15 +24,11 @@ Combine lecture video, narration, original audio and subtitles into MP4, or expo
 **Checksums:** [`SHA256SUMS`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS)
 <!-- public-release:end -->
 
-[Download for macOS](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English guide](docs/en/README.md) · [Deutsches Handbuch](docs/de/README.md) · [Русское руководство](docs/ru/README.md)
-
-<img src="Assets/AppIcon-1024.png" width="112" alt="LectureMerge app icon">
-
-**macOS 14 or later · Apple Silicon · Version 2.2.0**
-
-LectureMerge combines lecture video, Russian narration, original audio, and subtitles in one MP4 file. It can also export audio as AAC or MP3. The app works locally on your Mac and does not require an internet connection or an online API.
+**[Website](https://popovantondev.github.io/LectureMerge/index-en.html)**
 
 ![LectureMerge with its English interface](docs/en/screenshots/main.png)
+
+LectureMerge combines lecture video, Russian narration, original audio, and subtitles in one MP4 file. It can also export audio as AAC or MP3. The app works locally on your Mac and does not require an internet connection or an online API.
 
 ## Features
 

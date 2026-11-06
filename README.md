@@ -1,6 +1,10 @@
+<div align="center">
+  <img src="Assets/AppIcon-1024.png" width="128" alt="LectureMerge Symbol">
+</div>
+
 # LectureMerge
 
-**Deutsch** · [Русский](README.ru.md) · [English](README.en.md)
+[Русский](README.ru.md) · **Deutsch** · [English](README.en.md)
 
 <!-- public-release:start -->
 Verbindet Vorlesungsvideo, Sprachausgabe, Originalton und Untertitel als MP4; exportiert auch Audio.
@@ -20,15 +24,11 @@ Verbindet Vorlesungsvideo, Sprachausgabe, Originalton und Untertitel als MP4; ex
 **Prüfsummen:** [`SHA256SUMS`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS)
 <!-- public-release:end -->
 
-[Für macOS herunterladen](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [Deutsches Handbuch](docs/de/README.md) · [English guide](docs/en/README.md) · [Русское руководство](docs/ru/README.md)
-
-<img src="Assets/AppIcon-1024.png" width="112" alt="App-Symbol von LectureMerge">
-
-**macOS 14 oder neuer · Apple Silicon · Version 2.2.0**
-
-LectureMerge führt Vorlesungsvideo, russische Vertonung, Originalton und Untertitel in einer MP4-Datei zusammen. Außerdem kann die App Audio als AAC oder MP3 exportieren. Sie arbeitet lokal auf Ihrem Mac und benötigt weder eine Internetverbindung noch eine Online-API.
+**[Webseite](https://popovantondev.github.io/LectureMerge/)**
 
 ![LectureMerge mit deutscher Oberfläche](docs/de/screenshots/main.png)
+
+LectureMerge führt Vorlesungsvideo, russische Vertonung, Originalton und Untertitel in einer MP4-Datei zusammen. Außerdem kann die App Audio als AAC oder MP3 exportieren. Sie arbeitet lokal auf Ihrem Mac und benötigt weder eine Internetverbindung noch eine Online-API.
 
 ## Funktionen
 

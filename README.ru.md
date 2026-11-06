@@ -1,6 +1,10 @@
+<div align="center">
+  <img src="Assets/AppIcon-1024.png" width="128" alt="Значок LectureMerge">
+</div>
+
 # LectureMerge
 
-[Deutsch](README.md) · **Русский** · [English](README.en.md)
+**Русский** · [Deutsch](README.md) · [English](README.en.md)
 
 <!-- public-release:start -->
 Объединяет видео лекции, озвучку, исходное аудио и субтитры в MP4; также экспортирует аудио.
@@ -20,15 +24,11 @@
 **Контрольные суммы:** [`SHA256SUMS`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS)
 <!-- public-release:end -->
 
-[Скачать для macOS](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [Русское руководство](docs/ru/README.md) · [Deutsches Handbuch](docs/de/README.md) · [English guide](docs/en/README.md)
-
-<img src="Assets/AppIcon-1024.png" width="112" alt="Значок приложения LectureMerge">
-
-**macOS 14 или новее · Apple Silicon · Версия 2.2.0**
-
-LectureMerge объединяет видео лекции, русскую озвучку, оригинальный звук и субтитры в одном MP4-файле. Звук можно также экспортировать как AAC или MP3. Приложение работает локально на вашем Mac и не требует ни интернета, ни онлайн-API.
+**[Сайт](https://popovantondev.github.io/LectureMerge/index-ru.html)**
 
 ![LectureMerge с русским интерфейсом](docs/ru/screenshots/main.png)
+
+LectureMerge объединяет видео лекции, русскую озвучку, оригинальный звук и субтитры в одном MP4-файле. Звук можно также экспортировать как AAC или MP3. Приложение работает локально на вашем Mac и не требует ни интернета, ни онлайн-API.
 
 ## Возможности
 

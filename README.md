@@ -1,5 +1,7 @@
 # LectureMerge
 
+**Deutsch** · [Русский](README.ru.md) · [English](README.en.md)
+
 <!-- public-release:start -->
 Verbindet Vorlesungsvideo, Sprachausgabe, Originalton und Untertitel als MP4; exportiert auch Audio.
 
@@ -17,8 +19,6 @@ Verbindet Vorlesungsvideo, Sprachausgabe, Originalton und Untertitel als MP4; ex
 
 **Prüfsummen:** [`SHA256SUMS`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS)
 <!-- public-release:end -->
-
-**Deutsch** · [Русский](README.ru.md) · [English](README.en.md)
 
 [Für macOS herunterladen](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [Deutsches Handbuch](docs/de/README.md) · [English guide](docs/en/README.md) · [Русское руководство](docs/ru/README.md)
 

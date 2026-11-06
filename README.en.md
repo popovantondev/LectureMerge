@@ -1,5 +1,7 @@
 # LectureMerge
 
+[Deutsch](README.md) · [Русский](README.ru.md) · **English**
+
 <!-- public-release:start -->
 Combine lecture video, narration, original audio and subtitles into MP4, or export audio.
 
@@ -17,8 +19,6 @@ Combine lecture video, narration, original audio and subtitles into MP4, or expo
 
 **Checksums:** [`SHA256SUMS`](https://github.com/popovantondev/LectureMerge/releases/download/v2.2.0/SHA256SUMS)
 <!-- public-release:end -->
-
-[Deutsch](README.md) · [Русский](README.ru.md) · **English**
 
 [Download for macOS](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English guide](docs/en/README.md) · [Deutsches Handbuch](docs/de/README.md) · [Русское руководство](docs/ru/README.md)
 

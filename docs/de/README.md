@@ -1,3 +1,7 @@
+<!-- ppk-readme:head:start -->
+<a href="https://popovantondev.github.io/LectureMerge/index.html"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/header-de-dark.c4dc9243.svg"><img src="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/header-de-light.fa6fd75b.svg" width="880" height="188" alt="LectureMerge — Verbindet Vorlesungsvideo, Sprachausgabe und Untertitel als MP4. macOS 14+ · Apple Silicon, Release 2.2.0"></picture></a>
+<!-- ppk-readme:head:end -->
+
 # LectureMerge – Benutzerhandbuch
 
 <!-- public-release:start -->
@@ -20,9 +24,23 @@ Verbindet Vorlesungsvideo, Sprachausgabe, Originalton und Untertitel als MP4; ex
 
 [Für macOS laden](https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0) · [English](../en/README.md) · [Deutsch](README.md) · [Русский](../ru/README.md)
 
+<!-- ppk-readme:body:start -->
+<p>
+<a href="https://github.com/popovantondev/LectureMerge/releases/tag/v2.2.0"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/btn-download-de-dark.18a849aa.svg"><img src="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/btn-download-de-light.dde97d67.svg" width="171" height="36" alt="Herunterladen"></picture></a>
+<a href="https://popovantondev.github.io/LectureMerge/index.html"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/btn-website-de-dark.b390217d.svg"><img src="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/btn-website-de-light.02a12026.svg" width="129" height="36" alt="Webseite"></picture></a>
+<a href="https://popovantondev.github.io/LectureMerge/Guide-de.html"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/btn-guide-de-dark.91a049f6.svg"><img src="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/btn-guide-de-light.e85db9fe.svg" width="134" height="36" alt="Anleitung"></picture></a>
+<a href="https://github.com/popovantondev/LectureMerge/issues/new/choose"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/btn-bug-de-dark.9914833a.svg"><img src="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/btn-bug-de-light.729c226e.svg" width="168" height="36" alt="Fehler melden"></picture></a>
+</p>
+
+<p><a href="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/de/screenshots/main.png"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/preview-de-dark.6829dffb.webp"><img src="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/preview-de-light.2dbff149.webp" width="880" height="516" alt="Oberfläche von LectureMerge"></picture></a><br>
+<sub><a href="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/de/screenshots/main.png">Ganzer Screenshot</a></sub></p>
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/divider-dark.fbb5c3a2.svg"><img src="https://raw.githubusercontent.com/popovantondev/LectureMerge/main/docs/readme/divider-light.8825eba3.svg" width="880" height="6" alt="Trennlinie"></picture>
+<!-- ppk-readme:body:end -->
+
 LectureMerge fügt Vorlesungsvideo, russische Vertonung, Originalton und Untertitel in einer MP4-Datei zusammen. Außerdem kann eine Audiospur separat als AAC oder MP3 exportiert werden. Die Verarbeitung erfolgt lokal auf dem Mac; ein Online-Dienst wird nicht verwendet. **Version 2.2.0 · macOS 14 oder neuer · Apple Silicon.**
 
-![LectureMerge mit deutscher Oberfläche](screenshots/main.png)
+[LectureMerge mit deutscher Oberfläche](screenshots/main.png)
 
 ## Oberflächensprache wählen
 

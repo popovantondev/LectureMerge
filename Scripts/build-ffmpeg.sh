@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 TASK_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-TASK_BUILD="$(mktemp -d /tmp/olya-codecs.XXXXXX)"
+TASK_BUILD="$(mktemp -d /tmp/lecturemerge-codecs.XXXXXX)"
 trap 'rm -rf "$TASK_BUILD"' EXIT
 mkdir -p "$TASK_ROOT/vendor" "$TASK_ROOT/build"
 fetch() { if [ ! -f "$2" ]; then curl -fL --retry 2 "$1" -o "$2"; fi; }
